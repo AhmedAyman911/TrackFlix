@@ -15,7 +15,7 @@ export default function MovieRow({ title, movies = [] }) {
     return (
         <div className="relative z-10">
             <div className="pt-16 px-4 md:px-10">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">{ title }</h1>
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">{ title }</h1>
                 <div className="relative group ">
                     <div className="overflow-x-auto scrollbar-hide px-5">
                         <button
@@ -26,7 +26,7 @@ export default function MovieRow({ title, movies = [] }) {
                         </button>
                         <div
                             ref={scrollRef}
-                            className="overflow-x-auto scrollbar-hide scroll-smooth px-6 flex space-x-3 snap-x snap-mandatory"
+                            className="overflow-x-auto scrollbar-hide scroll-smooth py-6 px-6 flex space-x-3 snap-x snap-mandatory"
                         >
                             {movies.map((movie) => (
                                 <div key={movie.id} className="snap-start flex-shrink-0 w-52 px-2">

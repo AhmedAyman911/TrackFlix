@@ -12,10 +12,10 @@ export default function MovieCard({ movie }) {
         />
         <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-red-600 mb-1">
-            {movie.title}
+          {movie.title || movie.name}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            ⭐ {movie.vote_average} | {movie.release_date}
+            ⭐ {movie.vote_average} | {movie.release_date ||movie.origin_country}
           </p>
         </div>
       </div>
