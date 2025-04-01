@@ -4,6 +4,7 @@ import './App.css'
 import Navbar from './componants/navbar'
 import Login from './componants/login'
 import Home from './pages/Home';
+import MovieDetails from './pages/Details';
 function App() {
 
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/movie/:id" element={<MovieDetails />} />
           </Routes>
         </main>
       </div>
