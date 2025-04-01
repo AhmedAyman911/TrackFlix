@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import MovieCard from "../componants/card";
+import { useState, useEffect } from "react";
 import { getTrendingMovies } from "../api/tmbd";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import MovieRow from "../componants/row";
 export default function Home() {
     const [movies, setMovies] = useState([]);
     useEffect(() => {
@@ -9,49 +8,14 @@ export default function Home() {
             const trending = await getTrendingMovies();
             setMovies(trending);
         };
-
         fetchMovies();
     }, []);
-    const scrollRef = useRef(null);
 
-    const scroll = (direction) => {
-        const scrollAmount = scrollRef.current.offsetWidth;
-        scrollRef.current.scrollBy({
-            left: direction === 'left' ? -scrollAmount : scrollAmount,
-            behavior: 'smooth',
-        });
-    };
     return (
-        <div className="relative z-10">
-            <div className="min-h-screen pt-16 px-4 md:px-10">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Trending Movies</h1>
-                <div className="relative group ">
-                    <div className="overflow-x-auto scrollbar-hide py-6 px-5">
-                        <button
-                            onClick={() => scroll('left')}
-                            className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black text-white p-2 rounded-full hidden group-hover:block"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
-                        <div
-                            ref={scrollRef}
-                            className="overflow-x-auto scrollbar-hide scroll-smooth py-6 px-6 flex space-x-3 snap-x snap-mandatory"
-                        >
-                            {movies.map((movie) => (
-                                <div key={movie.id} className="snap-start flex-shrink-0 w-52 px-2">
-                                    <MovieCard movie={movie} />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <button
-                        onClick={() => scroll('right')}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black text-white p-2 rounded-full hidden group-hover:block"
-                    >
-                        <ChevronRight size={24} />
-                    </button>
-                </div>
-            </div>
+        <div className="flex flex-col z-10">
+            <MovieRow title="Trending Movies" movies={movies} />
+            <MovieRow title="Top Movies" movies={movies} />
         </div>
+        
     );
 }
