@@ -6,9 +6,9 @@ export default function MovieCard({ movie }) {
         onClick={() => navigate(`/movie/${movie.id}`)}
         >
         <img
-          src={movie.poster_path}
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
-          className="w-full h-72 object-fill transition duration-300 ease-in-out "
+          className="w-full h-64 object-fill transition duration-300 ease-in-out "
         />
         <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-red-600 mb-1">
