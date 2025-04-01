@@ -4,7 +4,7 @@ import { Moon, Sun, Search } from 'lucide-react';
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
   const toggleTheme = () => {
