@@ -21,3 +21,25 @@ export const getTrendingTVShows = async () => {
     return [];
   }
 };
+
+export const getTopRatedMovies = async () => {
+  try {
+    const res = await axiosTMDB.get('movie/top_rated');
+    console.log(res.data.results);
+    return res.data.results;
+  } catch (error) {
+    console.error('Failed to fetch Top Rated movies:', error);
+    return [];
+  }
+};
+
+export const getTopRatedTVShows = async () => {
+  try {
+    const res = await axiosTMDB.get('tv/top_rated');
+    console.log(res.data.results);
+    return res.data.results;
+  } catch (error) {
+    console.error('Failed to fetch Top Rated TV shows:', error);
+    return [];
+  }
+};
