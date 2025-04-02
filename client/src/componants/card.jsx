@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 export default function MovieCard({ movie }) {
     const navigate = useNavigate();
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-red-500 animate-fade-in"
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition h-[365px] duration-300 hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-red-500 animate-fade-in"
         onClick={() => navigate(`/movie/${movie.id}`)}
         >
         <img
@@ -11,11 +11,11 @@ export default function MovieCard({ movie }) {
           className="w-full h-64 object-fill transition duration-300 ease-in-out "
         />
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-red-600 mb-1">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-red-600 mb-1 line-clamp-2">
           {movie.title || movie.name}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            ⭐ {movie.vote_average} | {movie.release_date ||movie.origin_country}
+            ⭐ {movie.vote_average ? movie.vote_average.toFixed(1) : "N/A"} | {(movie.release_date || movie.first_air_date || '').slice(0, 4)} | {movie.original_language ||movie.origin_country}
           </p>
         </div>
       </div>

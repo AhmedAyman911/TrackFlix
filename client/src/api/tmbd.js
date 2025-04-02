@@ -10,6 +10,7 @@ export const getTrendingMovies = async () => {
     return [];
   }
 };
+
 export const getTrendingTVShows = async () => {
   try {
     const res = await axiosTMDB.get('/trending/tv/week');
@@ -20,4 +21,3 @@ export const getTrendingTVShows = async () => {
     return [];
   }
 };
-

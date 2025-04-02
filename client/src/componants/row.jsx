@@ -14,9 +14,9 @@ export default function MovieRow({ title, movies = [] }) {
     
     return (
         <div className="relative z-10">
-            <div className="pt-16 px-4 md:px-10">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">{ title }</h1>
-                <div className="relative group ">
+            <div className="pt-2 px-4 md:px-10">
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-left px-8">{ title }</h1>
+                <div className="relative group">
                     <div className="overflow-x-auto scrollbar-hide px-5">
                         <button
                             onClick={() => scroll('left')}
