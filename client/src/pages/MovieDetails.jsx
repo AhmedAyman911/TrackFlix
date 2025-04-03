@@ -61,7 +61,7 @@ export default function MovieDetails() {
                             />
                         </div>
                         <div className="flex-1 text-center md:text-left">
-                            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-red-500">{movie.title}</h1>
+                            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-red-600">{movie.title}</h1>
                             <p className="text-sm text-yellow-300 mb-1">
                                 ⭐ {movie.vote_average?.toFixed(1)} | {movie.release_date?.slice(0, 4)}
                             </p>
