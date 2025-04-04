@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CastCard from '../componants/castCard';
+import SkeletonCard from '../componants/skeletonCard';
 import { getMovieDetails, getMovieVideos, getMovieProviders, getMovieCredits } from '../api/tmbd';
 export default function MovieDetails() {
     const { id } = useParams();
@@ -8,47 +9,50 @@ export default function MovieDetails() {
     const [videos, setVideos] = useState([]);
     const [providers, setProvider] = useState([]);
     const [cast, setCast] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        const fetchDetails = async () => {
-            const data = await getMovieDetails(id);
-            setMovie(data);
-        };
+        const fetchAll = async () => {
+            const start = Date.now();
 
-        const fetchVideos = async () => {
-            const data = await getMovieVideos(id);
-            const filteredTrailers = data?.results?.filter(
-                (vid) =>
-                    vid.type === "Trailer" ||
-                    vid.type === "Official Trailer"
+            const [details, videos, providers, credits] = await Promise.all([
+                getMovieDetails(id),
+                getMovieVideos(id),
+                getMovieProviders(id),
+                getMovieCredits(id),
+            ]);
+
+            setMovie(details);
+
+            const trailers = videos?.results?.filter(
+                (vid) => vid.type === "Trailer" || vid.type === "Official Trailer"
             ) || [];
-            setVideos(filteredTrailers);
+            setVideos(trailers);
+
+            const flatrate = providers?.results?.EG?.flatrate || [];
+            setProvider(flatrate);
+
+            setCast(credits?.cast || []);
+
+            const elapsed = Date.now() - start;
+            const delay = Math.max(0, 1500 - elapsed);
+            setTimeout(() => setIsLoading(false), delay);
         };
 
-        const fetchProviders = async () => {
-            const data = await getMovieProviders(id);
-            const countryCode = "EG";
-            const flatrateProviders = data?.results?.[countryCode]?.flatrate || [];
-            setProvider(flatrateProviders);
-        };
-
-        const fetchCredits = async () => {
-            const data = await getMovieCredits(id);
-            if (data) {
-                setCast(data.cast);
-            }
-        };
-
-        fetchDetails();
-        fetchVideos();
-        fetchProviders();
-        fetchCredits();
-
+        fetchAll();
     }, [id]);
 
-    if (!movie) return <div className="text-center pt-28">Loading...</div>;
+
+    if (isLoading) return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 md:px-20 pt-6 place-items-center">
+            {Array.from({ length: 12 }).map((_, i) => (
+                <SkeletonCard key={i} />
+            ))}
+        </div>
+    );
+
 
     return (
-        <div className="pt-8 transition duration-300 animate-fade-in dark:bg-gray-900">
+        <div className="py-8 transition duration-300 animate-fade-in dark:bg-gray-900 min-h-screen flex flex-col">
             <div className="relative w-screen h-auto md:h-[500px] text-white overflow-hidden">
                 <div
                     className="hidden md:block absolute top-0 w-screen h-full bg-cover bg-right bg-no-repeat"
@@ -108,41 +112,39 @@ export default function MovieDetails() {
                 </div>
             </div>
             <div className="mt-6">
-                <h2 className="text-2xl font-bold mb-4 text-whit text-left px-6 md:px-20">Cast</h2>
+                <h2 className="text-2xl font-bold mb-4 text-white text-left px-6 md:px-20">Cast</h2>
                 <div className="flex overflow-x-auto gap-5 scrollbar-hide px-6 py-2 md:px-20">
-                    {cast.slice(0, 12).map((actor) => (
-                        <CastCard key={actor.id} actor={actor} />
+                    {cast.slice(0, 12).map((actor, index) => (
+                        <div
+                            key={actor.id}
+                            className={`opacity-0 animate-fade-in`}
+                            style={{ animationDelay: `${index * 100}ms` }}
+                        >
+                            <CastCard actor={actor} />
+                        </div>
                     ))}
                 </div>
-
-
             </div>
 
 
-
-
-
-
-
-
             {videos.length > 0 && (
-                <div className="mt-10 ml-12 w-48">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 text-left">Official Trailers</h2>
-                    <div className="space-y-4">
+                <div className="mt-10 px-6 md:px-20">
+                    <h2 className="text-2xl font-semibold dark:text-white mb-4 text-left">Official Trailers</h2>
+                    <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-4">
                         {videos.map((trailer) => (
-                            <div key={trailer.id} className="aspect-video">
+                            <div key={trailer.id} className="min-w-[320px] md:min-w-[480px] aspect-video rounded-xl overflow-hidden shadow-lg">
                                 <iframe
                                     src={`https://www.youtube.com/embed/${trailer.key}`}
                                     title={trailer.name}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
-                                    className="w-full h-full rounded-lg shadow"
+                                    className="w-full h-full"
                                 />
                             </div>
                         ))}
                     </div>
                 </div>
             )}
-
 
         </div>
     );

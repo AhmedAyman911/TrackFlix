@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        'fade-in': 'fadeIn 0.8s ease-out',
+        'fade-in': 'fadeIn 0.8s ease-out both',
         'line-sweep': 'line-sweep 4s linear infinite',
         'pulse-slow': 'pulse 4.5s ease-in-out infinite',
       },
