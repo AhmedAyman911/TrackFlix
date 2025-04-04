@@ -1,12 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import Background from "../componants/background";
-import { getMovieDetails, getMovieVideos, getMovieProviders } from '../api/tmbd';
+import CastCard from '../componants/castCard';
+import { getMovieDetails, getMovieVideos, getMovieProviders, getMovieCredits } from '../api/tmbd';
 export default function MovieDetails() {
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
     const [videos, setVideos] = useState([]);
     const [providers, setProvider] = useState([]);
+    const [cast, setCast] = useState([]);
     useEffect(() => {
         const fetchDetails = async () => {
             const data = await getMovieDetails(id);
@@ -30,9 +31,18 @@ export default function MovieDetails() {
             setProvider(flatrateProviders);
         };
 
+        const fetchCredits = async () => {
+            const data = await getMovieCredits(id);
+            if (data) {
+                setCast(data.cast);
+            }
+        };
+
         fetchDetails();
         fetchVideos();
         fetchProviders();
+        fetchCredits();
+
     }, [id]);
 
     if (!movie) return <div className="text-center pt-28">Loading...</div>;
@@ -40,7 +50,6 @@ export default function MovieDetails() {
     return (
         <div className="pt-8 transition duration-300 animate-fade-in dark:bg-gray-900">
             <div className="relative w-screen h-auto md:h-[500px] text-white overflow-hidden">
-                {/* Backdrop image (hidden on small screens) */}
                 <div
                     className="hidden md:block absolute top-0 w-screen h-full bg-cover bg-right bg-no-repeat"
                     style={{
@@ -97,6 +106,16 @@ export default function MovieDetails() {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="mt-6">
+                <h2 className="text-2xl font-bold mb-4 text-whit text-left px-6 md:px-20">Cast</h2>
+                <div className="flex overflow-x-auto gap-5 scrollbar-hide px-6 py-2 md:px-20">
+                    {cast.slice(0, 12).map((actor) => (
+                        <CastCard key={actor.id} actor={actor} />
+                    ))}
+                </div>
+
+
             </div>
 
 

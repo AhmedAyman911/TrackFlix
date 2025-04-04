@@ -76,3 +76,14 @@ export const getMovieProviders = async (id) => {
     return null;
   }
 };
+
+export const getMovieCredits = async (id) => {
+  try {
+    const res = await axiosTMDB.get(`/movie/${id}/credits`);
+    console.log("credits: "+res);
+    return res.data;
+  } catch (err) {
+    console.error('Failed to fetch movie credits:', err);
+    return null;
+  }
+};
