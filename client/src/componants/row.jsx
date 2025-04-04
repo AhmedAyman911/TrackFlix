@@ -11,11 +11,11 @@ export default function MovieRow({ title, movies = [] }) {
             behavior: 'smooth',
         });
     };
-    
+
     return (
         <div className="relative z-10">
             <div className="pt-2 px-1 md:px-10">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-left px-8">{ title }</h1>
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-left px-8">{title}</h1>
                 <div className="relative group">
                     <div className="overflow-x-auto scrollbar-hide px-5">
                         <button
@@ -28,9 +28,12 @@ export default function MovieRow({ title, movies = [] }) {
                             ref={scrollRef}
                             className="overflow-x-auto scrollbar-hide scroll-smooth py-6 px-6 flex space-x-3 snap-x snap-mandatory"
                         >
-                            {movies.map((movie) => (
-                                <div key={movie.id} className="snap-start flex-shrink-0 md:w-52 md:px-2 md:pl-2 px-10 w-72">
-                                    <MovieCard movie={movie} />
+                            {movies.map((movie, index) => (
+                                <div
+                                    key={movie.id}
+                                    className="snap-start flex-shrink-0 md:w-52 md:px-2 md:pl-2 px-10 w-72"
+                                >
+                                    <MovieCard movie={movie} index={index} />
                                 </div>
                             ))}
                         </div>

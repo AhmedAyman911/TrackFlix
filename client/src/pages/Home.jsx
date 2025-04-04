@@ -25,7 +25,7 @@ export default function Home() {
             setTopTVShows(topMovies);
 
             const elapsed = Date.now() - start;
-            const delay = Math.max(0, 1500 - elapsed);
+            const delay = Math.max(0, 1000 - elapsed);
             setTimeout(() => setIsLoading(false), delay);
         };
 

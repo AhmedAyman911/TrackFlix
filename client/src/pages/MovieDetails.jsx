@@ -34,7 +34,7 @@ export default function MovieDetails() {
             setCast(credits?.cast || []);
 
             const elapsed = Date.now() - start;
-            const delay = Math.max(0, 1500 - elapsed);
+            const delay = Math.max(0, 1000 - elapsed);
             setTimeout(() => setIsLoading(false), delay);
         };
 
