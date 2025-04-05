@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-export default function MovieCard({ movie, index }) {
+export default function MovieCard({ movie,mediaType , index }) {
   const navigate = useNavigate();
 
   return (
@@ -9,7 +9,7 @@ export default function MovieCard({ movie, index }) {
     >
       <div
         className="bg-white w-48 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition h-[365px] duration-300 transform-gpu hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-red-600"
-        onClick={() => navigate(`/movie/${movie.id}`)}
+        onClick={() => navigate(`/${mediaType}/${movie.id}`)}
       >
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

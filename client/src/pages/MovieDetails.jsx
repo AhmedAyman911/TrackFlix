@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CastCard from '../componants/castCard';
 import SkeletonCard from '../componants/skeletonCard';
-import { getMovieDetails, getMovieVideos, getMovieProviders, getMovieCredits } from '../api/tmbd';
+import { getMediaDetails, getMediaVideos, getMediaProviders, getMediaCredits } from '../api/tmbd';
 export default function MovieDetails() {
-    const { id } = useParams();
+    const { id, type } = useParams();
     const [movie, setMovie] = useState(null);
     const [videos, setVideos] = useState([]);
     const [providers, setProvider] = useState([]);
@@ -15,10 +15,10 @@ export default function MovieDetails() {
             const start = Date.now();
 
             const [details, videos, providers, credits] = await Promise.all([
-                getMovieDetails(id),
-                getMovieVideos(id),
-                getMovieProviders(id),
-                getMovieCredits(id),
+                getMediaDetails(type, id),
+                getMediaVideos(type, id),
+                getMediaProviders(type, id),
+                getMediaCredits(type, id),
             ]);
 
             setMovie(details);
@@ -39,7 +39,8 @@ export default function MovieDetails() {
         };
 
         fetchAll();
-    }, [id]);
+    }, [type, id]);
+
 
 
     if (isLoading) return (
@@ -52,7 +53,7 @@ export default function MovieDetails() {
 
 
     return (
-        <div className="py-8 transition duration-300 animate-fade-in dark:bg-gray-900 min-h-screen flex flex-col">
+        <div className="py-8 transition duration-300 animate-fade-in dark:bg-gray-900 min-h-screen flex flex-col ">
             <div className="relative w-screen h-auto md:h-[500px] text-white overflow-hidden">
                 <div
                     className="hidden md:block absolute top-0 w-screen h-full bg-cover bg-right bg-no-repeat"
@@ -74,13 +75,19 @@ export default function MovieDetails() {
                             />
                         </div>
                         <div className="flex-1 text-center md:text-left">
-                            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-red-600">{movie.title}</h1>
+                            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-red-600">{movie.title || movie.name}</h1>
                             <p className="text-sm text-yellow-300 mb-1">
-                                ⭐ {movie.vote_average?.toFixed(1)} | {movie.release_date?.slice(0, 4)}
+                                ⭐ {movie.vote_average?.toFixed(1)} | {movie.release_date?.slice(0, 4) || movie.first_air_date?.slice(0, 4)}
                             </p>
                             <p className="text-sm text-blue-300 mb-2">
-                                🎭 {movie.genres?.map((g) => g.name).join(', ')} | ⏱ {movie.runtime} min | 🌐 {movie.spoken_languages?.[0]?.english_name}
+                                🎭 {movie.genres?.map((g) => g.name).join(', ')} |
+                                {movie.runtime ? (
+                                    ` ⏱ ${movie.runtime} min`
+                                ) : (
+                                    ` 📚 ${movie.number_of_seasons} Season${movie.number_of_seasons > 1 ? 's' : ''} | 🎞 ${movie.number_of_episodes} Episodes`
+                                )} | 🌐 {movie.spoken_languages?.[0]?.english_name}
                             </p>
+
                             <p className="text-md dark:text-gray-200 text-gray-900 italic mb-2">{movie.tagline}</p>
                             <p className="text-md dark:text-gray-300 text-gray-900">{movie.overview}</p>
                             {providers.length > 0 && (
@@ -131,7 +138,7 @@ export default function MovieDetails() {
                 <div className="mt-10 px-6 md:px-20">
                     <h2 className="text-2xl font-semibold dark:text-white mb-4 text-left">Official Trailers</h2>
                     <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-4">
-                        {videos.map((trailer) => (
+                        {videos.slice(0,3).map((trailer) => (
                             <div key={trailer.id} className="min-w-[320px] md:min-w-[480px] aspect-video rounded-xl overflow-hidden shadow-lg">
                                 <iframe
                                     src={`https://www.youtube.com/embed/${trailer.key}`}

@@ -44,46 +44,31 @@ export const getTopRatedTVShows = async () => {
   }
 };
 
-export const getMovieDetails = async (id) => {
-  try {
-    const res = await axiosTMDB.get(`/movie/${id}`);
-    //console.log(res.data);
-    return res.data;
-  } catch (err) {
-    console.error('Failed to fetch movie details:', err);
-    return null;
-  }
+export const getMediaDetails = async (type, id) => {
+  const res = await axiosTMDB.get(`/${type}/${id}`);
+  return res.data;
 };
 
-export const getMovieVideos = async (id) => {
-  try {
-    const res = await axiosTMDB.get(`/movie/${id}/videos`);
-    console.log(res.data);
-    return res.data;
-  } catch (err) {
-    console.error('Failed to fetch movie videos:', err);
-    return null;
-  }
+export const getMediaVideos = async (type, id) => {
+  const res = await axiosTMDB.get(`/${type}/${id}/videos`);
+  return res.data;
 };
 
-export const getMovieProviders = async (id) => {
-  try {
-    const res = await axiosTMDB.get(`/movie/${id}/watch/providers`);
-    console.log(res.data);
-    return res.data;
-  } catch (err) {
-    console.error('Failed to fetch movie Providers:', err);
-    return null;
-  }
+export const getMediaProviders = async (type, id) => {
+  const res = await axiosTMDB.get(`/${type}/${id}/watch/providers`);
+  return res.data;
 };
 
-export const getMovieCredits = async (id) => {
+export const getMediaCredits = async (type, id) => {
   try {
-    const res = await axiosTMDB.get(`/movie/${id}/credits`);
-    console.log("credits: "+res);
+    const endpoint = type === 'tv'
+      ? `/${type}/${id}/aggregate_credits`
+      : `/${type}/${id}/credits`;
+
+    const res = await axiosTMDB.get(endpoint);
     return res.data;
   } catch (err) {
-    console.error('Failed to fetch movie credits:', err);
+    console.error(`Failed to fetch credits for ${type} ${id}`, err);
     return null;
   }
 };

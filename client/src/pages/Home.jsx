@@ -43,10 +43,10 @@ export default function Home() {
 
     return (
         <div className="flex flex-col z-10 w-full max-w-[1280px] mx-auto pt-8 px-12 md:px-8">
-            <MovieRow title="Trending Movies" movies={TrendingMovies} />
-            <MovieRow title="Trending TV Shows" movies={TrendingTvShows} />
-            <MovieRow title="Top Rated Movies" movies={TopTvShows} />
-            <MovieRow title="Top Rated TV Shows" movies={TopRatedMovies} />
+            <MovieRow title="Trending Movies" mediaType="movie" movies={TrendingMovies} />
+            <MovieRow title="Trending TV Shows" mediaType="tv" movies={TrendingTvShows} />
+            <MovieRow title="Top Rated Movies" mediaType="movie" movies={TopTvShows} />
+            <MovieRow title="Top Rated TV Shows" mediaType="tv" movies={TopRatedMovies} />
         </div>
 
     );

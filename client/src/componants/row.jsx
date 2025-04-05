@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from "./card";
-export default function MovieRow({ title, movies = [] }) {
+export default function MovieRow({ title, movies = [],mediaType  }) {
     const scrollRef = useRef(null);
 
     const scroll = (direction) => {
@@ -53,7 +53,7 @@ export default function MovieRow({ title, movies = [] }) {
                                     key={movie.id}
                                     className="snap-start flex-shrink-0 md:w-52 md:px-2 md:pl-2 md:px-10 px-6 w-72"
                                 >
-                                    <MovieCard movie={movie} index={index} />
+                                    <MovieCard movie={movie} index={index} mediaType={mediaType} />
                                 </div>
                             ))}
                         </div>
