@@ -5,12 +5,32 @@ export default function MovieRow({ title, movies = [] }) {
     const scrollRef = useRef(null);
 
     const scroll = (direction) => {
-        const scrollAmount = scrollRef.current.offsetWidth;
-        scrollRef.current.scrollBy({
-            left: direction === 'left' ? -scrollAmount : scrollAmount,
+        const container = scrollRef.current;
+        if (!container) return;
+
+        const firstCard = container.querySelector('div');
+        const cardWidth = firstCard?.offsetWidth || 200;
+        const spacing = 12;
+        const fullCardWidth = cardWidth + spacing;
+
+        const nextScrollLeft =
+            direction === 'left'
+                ? container.scrollLeft - fullCardWidth
+                : container.scrollLeft + fullCardWidth;
+
+        const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+        if (direction === 'right' && nextScrollLeft >= maxScrollLeft - 5) return;
+        if (direction === 'left' && nextScrollLeft <= 5) return;
+
+        container.scrollTo({
+            left: nextScrollLeft,
             behavior: 'smooth',
         });
     };
+
+
+
 
     return (
         <div className="relative z-10">
@@ -31,7 +51,7 @@ export default function MovieRow({ title, movies = [] }) {
                             {movies.map((movie, index) => (
                                 <div
                                     key={movie.id}
-                                    className="snap-start flex-shrink-0 md:w-52 md:px-2 md:pl-2 px-10 w-72"
+                                    className="snap-start flex-shrink-0 md:w-52 md:px-2 md:pl-2 md:px-10 px-6 w-72"
                                 >
                                     <MovieCard movie={movie} index={index} />
                                 </div>
@@ -40,7 +60,7 @@ export default function MovieRow({ title, movies = [] }) {
                     </div>
                     <button
                         onClick={() => scroll('right')}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black text-white p-2 rounded-full hidden group-hover:block"
+                        className=" absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black text-white p-2 rounded-full hidden group-hover:block"
                     >
                         <ChevronRight size={24} />
                     </button>
