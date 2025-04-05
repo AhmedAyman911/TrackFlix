@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from "./card";
-export default function MovieRow({ title, movies = [],mediaType  }) {
+export default function MovieRow({ title, movies = [], mediaType }) {
     const scrollRef = useRef(null);
 
     const scroll = (direction) => {
@@ -34,16 +34,16 @@ export default function MovieRow({ title, movies = [],mediaType  }) {
 
     return (
         <div className="relative z-10">
-            <div className="pt-2 px-1 md:px-10">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-left px-8">{title}</h1>
+            <div className="pt-2 px-14 md:px-10">
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-left md:px-8">{title}</h1>
                 <div className="relative group">
-                    <div className="overflow-x-auto scrollbar-hide px-5">
-                        <button
-                            onClick={() => scroll('left')}
-                            className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black text-white p-2 rounded-full hidden group-hover:block"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
+                    <button
+                        onClick={() => scroll('left')}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 text-black dark:text-white rounded-full block"
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
+                    <div className="overflow-x-auto scrollbar-hide md:px-6 px-7">
                         <div
                             ref={scrollRef}
                             className="overflow-x-auto scrollbar-hide scroll-smooth py-6 px-6 flex space-x-3 snap-x snap-mandatory"
@@ -51,7 +51,7 @@ export default function MovieRow({ title, movies = [],mediaType  }) {
                             {movies.map((movie, index) => (
                                 <div
                                     key={movie.id}
-                                    className="snap-start flex-shrink-0 md:w-52 md:px-2 md:pl-2 md:px-10 px-6 w-72"
+                                    className="snap-start flex-shrink-0 md:w-52 md:px-2 md:pl-2 md:px-10 px-2"
                                 >
                                     <MovieCard movie={movie} index={index} mediaType={mediaType} />
                                 </div>
@@ -60,7 +60,7 @@ export default function MovieRow({ title, movies = [],mediaType  }) {
                     </div>
                     <button
                         onClick={() => scroll('right')}
-                        className=" absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black text-white p-2 rounded-full hidden group-hover:block"
+                        className=" absolute right-1 top-1/2 -translate-y-1/2 z-10 text-black dark:text-white rounded-full block"
                     >
                         <ChevronRight size={24} />
                     </button>

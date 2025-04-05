@@ -21,7 +21,7 @@ export default function CastCard({ actor }) {
   
         <div className="mt-2">
           <h3 className="text-sm font-semibold dark:text-white truncate">{actor.name}</h3>
-          <p className="text-xs dark:text-gray-400 truncate">{actor.character ||actor.roles[0].character}</p>
+          <p className="text-xs dark:text-gray-400 truncate">{actor?.character || actor?.roles?.[0]?.character || 'N/A'}</p>
         </div>
       </div>
     );
