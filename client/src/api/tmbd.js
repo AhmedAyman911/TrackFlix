@@ -72,3 +72,10 @@ export const getMediaCredits = async (type, id) => {
     return null;
   }
 };
+
+export const searchMulti = async (query) => {
+  const res = await axiosTMDB.get(`/search/multi`, {
+    params: { query },
+  });
+  return res.data.results;
+};
