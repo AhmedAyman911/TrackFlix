@@ -88,8 +88,8 @@ export default function MovieDetails() {
                                 )} | 🌐 {movie.spoken_languages?.[0]?.english_name}
                             </p>
 
-                            <p className="text-md dark:text-gray-200 text-gray-900 italic mb-2">{movie.tagline}</p>
-                            <p className="text-md dark:text-gray-300 text-gray-900">{movie.overview}</p>
+                            <p className="text-md text-gray-200 italic mb-2">{movie.tagline}</p>
+                            <p className="text-md text-gray-300">{movie.overview}</p>
                             {providers.length > 0 && (
                                 <div className="mt-4">
                                     <div className="flex flex-wrap gap-4 justify-center md:justify-start">

@@ -79,3 +79,15 @@ export const searchMulti = async (query) => {
   });
   return res.data.results;
 };
+
+export const discover = async (type = "movie", params = {}) => {
+  const res = await axiosTMDB.get(`/discover/${type}`, { params });
+  return res.data;
+};
+
+
+export const getGenres = async (type) => {
+  const res = await axiosTMDB.get(`/genre/${type}/list`);
+  console.log(res.data)
+  return res.data;
+};

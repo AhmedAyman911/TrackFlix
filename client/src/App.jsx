@@ -5,6 +5,7 @@ import Navbar from './componants/navbar'
 import Home from './pages/Home';
 import MovieDetails from './pages/MovieDetails';
 import Background from './componants/background';
+import BrowsePage from './pages/browse';
 function App() {
 
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/:type/:id" element={<MovieDetails />} />
+            <Route path="/browse" element={<BrowsePage />} />
           </Routes>
         </main>
       </div>
