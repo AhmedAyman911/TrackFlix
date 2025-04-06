@@ -9,7 +9,7 @@ function App() {
 
   return (
     <Router>
-      <div className="flex flex-col min-h-screen py-9 px-0">
+      <div className="flex flex-col min-h-screen px-0">
         <Background />
         <Navbar />
         <main className='flex-1'>

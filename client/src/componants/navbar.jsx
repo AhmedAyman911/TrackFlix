@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Moon, Sun, Search, X } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import SearchBar from "../componants/search";
 export default function Navbar() {
   const navigate = useNavigate();

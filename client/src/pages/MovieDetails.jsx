@@ -53,7 +53,7 @@ export default function MovieDetails() {
 
 
     return (
-        <div className="py-8 transition duration-300 animate-fade-in dark:bg-gray-900 min-h-screen flex flex-col ">
+        <div className="py-16 transition duration-300 animate-fade-in dark:bg-gray-900 min-h-screen flex flex-col ">
             <div className="relative w-screen h-auto md:h-[500px] text-white overflow-hidden">
                 <div
                     className="hidden md:block absolute top-0 w-screen h-full bg-cover bg-right bg-no-repeat"
@@ -119,9 +119,9 @@ export default function MovieDetails() {
                 </div>
             </div>
             <div className="mt-6">
-                <h2 className="text-2xl font-bold mb-4 text-white text-left px-6 md:px-20">Cast</h2>
-                <div className="flex overflow-x-auto gap-5 scrollbar-hide px-6 py-2 md:px-20">
-                    {cast.slice(0, 12).map((actor, index) => (
+                <h2 className="text-2xl font-bold mb-4 dark:text-white text-left px-6 md:px-20">Cast</h2>
+                <div className="flex overflow-x-auto gap-5 px-6 py-2 md:px-20">
+                    {cast.slice(0, 11).map((actor, index) => (
                         <div
                             key={actor.id}
                             className={`opacity-0 animate-fade-in`}
@@ -137,7 +137,7 @@ export default function MovieDetails() {
             {videos.length > 0 && (
                 <div className="mt-10 px-6 md:px-20">
                     <h2 className="text-2xl font-semibold dark:text-white mb-4 text-left">Official Trailers</h2>
-                    <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-4">
+                    <div className="flex overflow-x-auto gap-6 pb-4">
                         {videos.slice(0,3).map((trailer) => (
                             <div key={trailer.id} className="min-w-[320px] md:min-w-[480px] aspect-video rounded-xl overflow-hidden shadow-lg">
                                 <iframe
