@@ -54,9 +54,9 @@ export default function MovieDetails() {
 
     return (
         <div className="py-16 transition duration-300 animate-fade-in dark:bg-gray-900 min-h-screen flex flex-col ">
-            <div className="relative w-screen h-auto md:h-[500px] text-white overflow-hidden">
+            <div className="relative w-full h-auto md:h-[500px] text-white overflow-hidden">
                 <div
-                    className="hidden md:block absolute top-0 w-screen h-full bg-cover bg-right bg-no-repeat"
+                    className="hidden md:block absolute top-0 w-full h-full bg-cover bg-right bg-no-repeat"
                     style={{
                         backgroundImage: `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`,
                         backgroundSize: '80%',
