@@ -13,42 +13,61 @@ const Browse = () => {
     { code: "ar", name: "Arabic" },
     { code: "es", name: "Spanish" },
     { code: "de", name: "German" },
-    { code: "ca", name: "Catalan" },
+    { code: "tr", name: "Turkish" },
     { code: "ja", name: "Japanese" },
     { code: "ko", name: "Korean" },
+    { code: "hi", name: "Indian" },
   ]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [sortBy, setSortBy] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
-
   const [tempSelectedGenres, setTempSelectedGenres] = useState([]);
   const [tempSortBy, setTempSortBy] = useState("");
   const [tempSelectedLanguage, setTempSelectedLanguage] = useState("");
+  const [movieFilters, setMovieFilters] = useState({ genres: [], sortBy: "" });
+  const [tvFilters, setTvFilters] = useState({ genres: [], sortBy: "" });
+  const selectedGenres = type === "movie" ? movieFilters.genres : tvFilters.genres;
+  const sortBy = type === "movie" ? movieFilters.sortBy : tvFilters.sortBy;
 
   useEffect(() => {
     const fetchItems = async () => {
-      const genreString = selectedGenres.join(",");
+      const filters = type === "movie" ? movieFilters : tvFilters;
+  
+      const genreString = (filters.genres || []).join(",");
       const res = await discover(type, {
         page,
         with_genres: genreString,
-        sort_by: sortBy,
-        with_original_language: selectedLanguage,
+        sort_by: filters.sortBy,
+        with_original_language: filters.language,
       });
       setItems(res.results);
       setTotalPages(res.total_pages);
     };
     fetchItems();
-  }, [type, page, selectedGenres, sortBy, selectedLanguage]);
+  }, [type, page,movieFilters, tvFilters, selectedGenres, sortBy, selectedLanguage]);
 
   useEffect(() => {
     const fetchGenres = async () => {
       const res = await getGenres(type);
       setGenres(res.genres || res.data.genres);
     };
+
     fetchGenres();
+    setPage(1);
+
+    const stored = localStorage.getItem(`${type}-filters`);
+    const savedFilters = stored ? JSON.parse(stored) : { genres: [], sortBy: "", language: "" };
+
+    setTempSelectedGenres(savedFilters.genres || []);
+    setTempSortBy(savedFilters.sortBy || "");
+    setTempSelectedLanguage(savedFilters.language || "");
+    setSelectedLanguage(savedFilters.language || "");
+
+    if (type === "movie") {
+      setMovieFilters(savedFilters);
+    } else {
+      setTvFilters(savedFilters);
+    }
   }, [type]);
 
   const handleGenreChange = (id) => {
@@ -58,26 +77,39 @@ const Browse = () => {
   };
 
   const applyFilters = () => {
-    setSelectedGenres(tempSelectedGenres);
-    setSortBy(tempSortBy);
+    const filters = {
+      genres: tempSelectedGenres,
+      sortBy: tempSortBy,
+      language: tempSelectedLanguage,
+    };
+    localStorage.setItem(`${type}-filters`, JSON.stringify(filters));
     setSelectedLanguage(tempSelectedLanguage);
+    if (type === "movie") {
+      setMovieFilters(filters);
+    } else {
+      setTvFilters(filters);
+    }
     setPage(1);
   };
 
   const clearFilters = () => {
+    localStorage.removeItem(`${type}-filters`);
+    const emptyFilters = { genres: [], sortBy: "", language: "" };
+    if (type === "movie") {
+      setMovieFilters(emptyFilters);
+    } else {
+      setTvFilters(emptyFilters);
+    }
     setTempSelectedGenres([]);
     setTempSortBy("");
     setTempSelectedLanguage("");
-    setSelectedGenres([]);
-    setSortBy("");
-    setSelectedLanguage("");
+
     setPage(1);
   };
 
-  return (
-    <div className="p-20 pt-28">
-      
 
+  return (
+    <div className="md:p-20 md:pt-28 pt-20 p-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="border dark:border-gray-700 rounded-xl p-4 bg-white dark:bg-gray-900 shadow-md h-fit md:w-72">
           <h2 className="text-lg font-semibold mb-4 text-left">Filters</h2>
@@ -88,11 +120,10 @@ const Browse = () => {
                 <button
                   key={g.id}
                   onClick={() => handleGenreChange(g.id)}
-                  className={`px-3 py-1 rounded-full text-sm border transition-colors ${
-                    tempSelectedGenres.includes(g.id)
-                      ? "bg-red-600 text-white border-red-600"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white border-gray-300 dark:border-gray-600"
-                  }`}
+                  className={`px-3 py-1 rounded-full text-sm border transition-colors ${tempSelectedGenres.includes(g.id)
+                    ? "bg-red-600 text-white border-red-600"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white border-gray-300 dark:border-gray-600"
+                    }`}
                 >
                   {g.name}
                 </button>
@@ -110,11 +141,10 @@ const Browse = () => {
                       prev === lang.code ? "" : lang.code
                     )
                   }
-                  className={`px-3 py-1 rounded-full text-sm border transition-colors ${
-                    tempSelectedLanguage === lang.code
-                      ? "bg-red-600 text-white border-red-600"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white border-gray-300 dark:border-gray-600"
-                  }`}
+                  className={`px-3 py-1 rounded-full text-sm border transition-colors ${tempSelectedLanguage === lang.code
+                    ? "bg-red-600 text-white border-red-600"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white border-gray-300 dark:border-gray-600"
+                    }`}
                 >
                   {lang.name}
                 </button>

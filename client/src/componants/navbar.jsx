@@ -5,7 +5,7 @@ import SearchBar from "../componants/search";
 export default function Navbar() {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(true);
-  
+
   const toggleTheme = () => {
     setDarkMode(!darkMode);
     document.documentElement.classList.toggle('dark');
@@ -15,17 +15,23 @@ export default function Navbar() {
     navigate(path);
   };
 
+  const clear = () => {
+    localStorage.removeItem(`tv-filters`);
+    localStorage.removeItem(`movie-filters`);
+    handleNavigation('/')
+  };
+
   return (
     <nav className="w-full fixed top-0 left-0 bg-white dark:bg-gray-900 shadow z-50">
       <div className="flex justify-between items-center w-full md:px-20 px-4 py-4">
         <span
           className="md:text-2xl text-md font-bold text-red-600 cursor-pointer mr-3"
-          onClick={() => handleNavigation('/')}
+          onClick={() => clear()}
         >
           TrackFlix
         </span>
-        <SearchBar/>
-          
+        <SearchBar />
+
         <div className="flex items-center space-x-4">
           <button
             className="font-semibold text-gray-700 dark:text-white hover:text-red-500 dark:hover:text-red-500"

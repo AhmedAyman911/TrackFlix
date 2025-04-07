@@ -39,17 +39,17 @@ export default function SearchBar() {
             {suggestions.slice(0, 10).map((item) => (
                 <li
                     key={`${item.id}-${item.media_type}`}
-                    className="flex items-center gap-3 px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="flex items-center gap-3 px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 "
                     onClick={() => handleSelect(item)}
                 >
                     {item.poster_path ? (
                         <img
                             src={`https://image.tmdb.org/t/p/w92${item.poster_path}`}
                             alt={item.title || item.name}
-                            className="w-10 h-14 object-cover rounded"
+                            className="w-10 h-14 object-cover rounded hidden md:block"
                         />
                     ) : (
-                        <div className="w-10 h-14 bg-gray-300 dark:bg-gray-700 rounded flex items-center justify-center text-xs text-gray-500">
+                        <div className="w-10 h-14 bg-gray-300 dark:bg-gray-700 rounded flex items-center justify-center text-xs text-gray-500 hidden md:block">
                             N/A
                         </div>
                     )}
