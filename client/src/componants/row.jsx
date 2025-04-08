@@ -34,7 +34,7 @@ export default function MovieRow({ title, movies = [], mediaType }) {
 
     return (
         <div className="relative z-10">
-            <div className="pt-2 px-14 md:px-10">
+            <div className="pt-2 px-5 pl-7 md:px-10">
                 <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-left md:px-8">{title}</h1>
                 <div className="relative group">
                     <button
@@ -51,7 +51,7 @@ export default function MovieRow({ title, movies = [], mediaType }) {
                             {movies.map((movie, index) => (
                                 <div
                                     key={movie.id}
-                                    className="snap-start flex-shrink-0 md:w-52 md:px-2 md:pl-2 md:px-10 px-2"
+                                    className="snap-start flex-shrink-0 md:w-52 md:pl-2 md:px-10 px-2"
                                 >
                                     <MovieCard movie={movie} index={index} mediaType={mediaType} />
                                 </div>
@@ -60,7 +60,7 @@ export default function MovieRow({ title, movies = [], mediaType }) {
                     </div>
                     <button
                         onClick={() => scroll('right')}
-                        className=" absolute right-1 top-1/2 -translate-y-1/2 z-10 text-black dark:text-white rounded-full block"
+                        className=" absolute md:right-1 right-2 top-1/2 -translate-y-1/2 z-10 text-black dark:text-white rounded-full block"
                     >
                         <ChevronRight size={24} />
                     </button>

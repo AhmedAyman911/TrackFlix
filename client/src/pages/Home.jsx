@@ -33,7 +33,7 @@ export default function Home() {
     }, []);
 
     if (isLoading) return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 md:px-20 pt-6 place-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 md:px-20 pt-6 place-items-center">
             {Array.from({ length: 12 }).map((_, i) => (
                 <SkeletonCard key={i} />
             ))}

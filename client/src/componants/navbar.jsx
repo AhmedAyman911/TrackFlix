@@ -43,7 +43,7 @@ export default function Navbar() {
             className="font-semibold text-gray-700 dark:text-white hover:text-red-500 dark:hover:text-red-500"
             onClick={() => handleNavigation("/browse?type=tv")}
           >
-            TV show
+            shows
           </button>
           <button
             className="font-semibold text-gray-700 dark:text-white hover:text-red-500 dark:hover:text-red-500"

@@ -28,11 +28,12 @@ const Browse = () => {
   const [tvFilters, setTvFilters] = useState({ genres: [], sortBy: "" });
   const selectedGenres = type === "movie" ? movieFilters.genres : tvFilters.genres;
   const sortBy = type === "movie" ? movieFilters.sortBy : tvFilters.sortBy;
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
       const filters = type === "movie" ? movieFilters : tvFilters;
-  
+
       const genreString = (filters.genres || []).join(",");
       const res = await discover(type, {
         page,
@@ -44,7 +45,7 @@ const Browse = () => {
       setTotalPages(res.total_pages);
     };
     fetchItems();
-  }, [type, page,movieFilters, tvFilters, selectedGenres, sortBy, selectedLanguage]);
+  }, [type, page, movieFilters, tvFilters, selectedGenres, sortBy, selectedLanguage]);
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -90,6 +91,7 @@ const Browse = () => {
       setTvFilters(filters);
     }
     setPage(1);
+    setShowFilters(false);
   };
 
   const clearFilters = () => {
@@ -109,9 +111,20 @@ const Browse = () => {
 
 
   return (
-    <div className="md:p-20 md:pt-28 pt-20 p-4">
+    <div className="md:p-20 md:pt-28 pt-20 p-12">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="border dark:border-gray-700 rounded-xl p-4 bg-white dark:bg-gray-900 shadow-md h-fit md:w-72">
+        <div className="md:hidden flex justify-center">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="bg-red-600 text-white px-4 py-2 rounded w-64"
+          >
+            {showFilters ? "Hide Filters" : "Filters"}
+          </button>
+        </div>
+        <div
+          className={`border dark:border-gray-700 rounded-xl md:p-4 bg-white dark:bg-gray-900 shadow-md h-fit md:w-72 transition-all duration-500 ease-in-out overflow-hidden
+    ${showFilters ? "max-h-[1000px] opacity-100 p-4" : "max-h-0 opacity-0"} md:max-h-none md:opacity-100 md:block`}
+        >
           <h2 className="text-lg font-semibold mb-4 text-left">Filters</h2>
           <div className="mb-4">
             <h3 className="text-sm font-medium mb-2 text-left">Genres</h3>
@@ -181,11 +194,14 @@ const Browse = () => {
           </div>
         </div>
         <div className="md:col-span-3">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          <div className="flex flex-wrap justify-center gap-5 md:gap-8">
             {items.map((item) => (
-              <MovieCard key={item.id} movie={item} mediaType={type} />
+              <div key={item.id} >
+                <MovieCard movie={item} mediaType={type} />
+              </div>
             ))}
           </div>
+
           <div className="flex justify-center gap-2 mt-10 dark:text-white">
             <button
               className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
