@@ -9,13 +9,13 @@ export default function MovieCard({ movie,mediaType , index }) {
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <div
-        className="bg-white w-28 md:w-48 md:h-[365px] h-[240px] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition  duration-300 transform-gpu hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-red-600"
+        className="bg-white w-32 md:w-48 md:h-[365px] h-[265px] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition  duration-300 transform-gpu hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-red-600"
         onClick={() => navigate(`/${mediaType}/${movie.id}`)}
       >
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
-          className="md:h-72 h-42 w-28 md:w-48 object-fill transition duration-300 ease-in-out"
+          className="md:h-72 h-48 w-32 md:w-48 object-fill transition duration-300 ease-in-out"
         />
         <div className="p-3">
           <h3 className="text-md md:text-lg font-semibold text-gray-800 dark:text-red-600 mb-1 line-clamp-1">
