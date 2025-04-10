@@ -14,6 +14,10 @@ app.use(cors());
 app.use(express.json());
 
 app.use(clerkMiddleware);
+app.use(cors({
+  origin: "https://trackflix.vercel.app",
+  credentials: true,
+}));
 
 app.get('/private', ClerkExpressRequireAuth (), (req, res) => {
   res.json({ message: `Hello, ${req.auth.userId}! This is a protected route.` });
