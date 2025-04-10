@@ -17,6 +17,7 @@ function Dashboard() {
   };
 
   return (
-    <button onClick={fetchPrivateData}>Get Private Data</button>
+    <button className='py-20' onClick={fetchPrivateData}>Get Private Data</button>
   );
 }
+export default Dashboard

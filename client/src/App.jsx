@@ -7,6 +7,7 @@ import MovieDetails from './pages/MovieDetails';
 import Background from './componants/background';
 import BrowsePage from './pages/browse';
 import Signin from './pages/auth';
+import Dashboard from'./api/auth';
 function App() {
 
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/:type/:id" element={<MovieDetails />} />
             <Route path="/browse" element={<BrowsePage />} />
             <Route path="/auth" element={<Signin />}/>
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
       </div>
