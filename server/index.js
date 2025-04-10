@@ -13,14 +13,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+
+
+
 app.use(clerkMiddleware);
 const allowedOrigins = [
-  "http://localhost:5173", // Dev
-  "https://trackflix.vercel.app", // Production
+  "http://localhost:5173", 
+  "https://trackflix.vercel.app",
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
+    console.log('Request Origin:', origin);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {

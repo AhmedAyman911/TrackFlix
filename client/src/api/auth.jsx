@@ -8,6 +8,7 @@ function Dashboard() {
     const token = await getToken();
     console.log("Token:", token);
     const res = await axios.get('https://trackflix-api.vercel.app/private', {
+      withCredentials: true,
       headers: {
         Authorization: `Bearer ${token}`
       }
