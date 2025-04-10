@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import MovieDetails from './pages/MovieDetails';
 import Background from './componants/background';
 import BrowsePage from './pages/browse';
+import Signin from './pages/auth';
 function App() {
 
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/:type/:id" element={<MovieDetails />} />
             <Route path="/browse" element={<BrowsePage />} />
+            <Route path="/auth" element={<Signin />}/>
           </Routes>
         </main>
       </div>

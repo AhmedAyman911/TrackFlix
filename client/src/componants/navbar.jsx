@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { Moon, Sun } from 'lucide-react';
 import SearchBar from "../componants/search";
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+
 export default function Navbar() {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(true);
@@ -52,8 +54,19 @@ export default function Navbar() {
             Watchlist
           </button>
           <button onClick={toggleTheme} className="text-gray-600 dark:text-white">
-            {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
           </button>
+          <SignedIn>
+            <div className="flex items-center gap-4">
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          </SignedIn>
+
+          <SignedOut>
+            <Link to="/auth" className="text-sm border px-3 py-1 rounded hover:text-red-500">
+              Sign In
+            </Link>
+          </SignedOut>
         </div>
       </div>
     </nav>
