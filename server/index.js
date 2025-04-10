@@ -28,3 +28,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log('CLERK_SECRET_KEY:', process.env.CLERK_SECRET_KEY);
 });
+export default app
