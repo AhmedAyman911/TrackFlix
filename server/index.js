@@ -10,30 +10,19 @@ const clerkMiddleware = ClerkExpressWithAuth({
 });
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
-
-
-
-
-app.use(clerkMiddleware);
 const allowedOrigins = [
-  "http://localhost:5173", 
-  "https://trackflix.vercel.app",
+  "https://trackflix-one.vercel.app",
+  "http://localhost:5173"
 ];
 
+
 app.use(cors({
-  origin: function (origin, callback) {
-    console.log('Request Origin:', origin);
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: allowedOrigins,
   credentials: true,
-}));
+})); 
+
+app.use(express.json());
 
 app.get('/private', ClerkExpressRequireAuth (), (req, res) => {
   res.json({ message: `Hello, ${req.auth.userId}! This is a protected route.` });
