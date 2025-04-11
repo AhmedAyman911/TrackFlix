@@ -13,19 +13,16 @@ export default function Welcome() {
         const token = await getToken();
         console.log("Token:", token);
 
-        await axios.get("http://localhost:5000/private", {
+        await axios.get("https://trackflix-api.vercel.app/private", {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
 
-        await axios.post("http://localhost:5000/users/save-token", {
+        await axios.post("https://trackflix-api.vercel.app/users/save-token", {
           clerkId: userId,
           token,
         });
-
         console.log("Token saved to DB ✅");
-
-        // Optional: redirect after saving
         window.location.href = "/dashboard";
       } catch (error) {
         console.error("Error saving token:", error.response?.data || error.message);
