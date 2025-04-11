@@ -58,7 +58,7 @@ export default function Navbar() {
           </button>
           <SignedIn>
             <div className="flex items-center gap-4">
-              <UserButton afterSignOutUrl="/" />
+              <UserButton  />
             </div>
           </SignedIn>
 

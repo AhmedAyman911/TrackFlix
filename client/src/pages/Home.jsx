@@ -2,12 +2,36 @@ import { useState, useEffect } from "react";
 import { getTrendingMovies, getTrendingTVShows, getTopRatedTVShows, getTopRatedMovies } from "../api/tmbd";
 import MovieRow from "../componants/row";
 import SkeletonCard from "../componants/skeletonCard";
+import axios from 'axios';
+import { useAuth } from '@clerk/clerk-react';
 export default function Home() {
     const [TrendingMovies, setTrendingMovies] = useState([]);
     const [TrendingTvShows, setTrendingTVShows] = useState([]);
     const [TopRatedMovies, setTopRatedMovies] = useState([]);
     const [TopTvShows, setTopTVShows] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { getToken, userId, isSignedIn } = useAuth();
+  
+    useEffect(() => {
+      const fetchAndSaveToken = async () => {
+        try {
+          const token = await getToken();
+          console.log("Fetched token:", token);
+          await axios.post('http://localhost:5000/users/save-token', {
+            clerkId: userId,
+            token: token,
+          });
+          console.log("Token saved to DB successfully");
+        } catch (error) {
+          console.error("Error saving token:", error);
+        }
+      };
+  
+      if (isSignedIn) {
+        fetchAndSaveToken();
+      }
+    }, [getToken, userId, isSignedIn]);
+
     useEffect(() => {
         const fetchData = async () => {
             const start = Date.now();
