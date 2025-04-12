@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import CastCard from '../componants/castCard';
 import SkeletonCard from '../componants/skeletonCard';
 import { getMediaDetails, getMediaVideos, getMediaProviders, getMediaCredits } from '../api/tmbd';
-import AddToWatchlistButton from '../componants/addtowatchlistbutton';
+import AddToWatchlistButton from '../componants/addtowatchlistbutton.jsx';
 
 export default function MovieDetails() {
     const { id, type } = useParams();
