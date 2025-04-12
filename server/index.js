@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.js';
-
+import watchlistRoutes from './routes/watchlist.js';
 dotenv.config();
 import { ClerkExpressWithAuth, ClerkExpressRequireAuth  } from '@clerk/clerk-sdk-node';
 
@@ -26,7 +26,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use('/users', userRoutes);
-
+app.use('/watchlist', watchlistRoutes);
 app.use(express.json());
 const mongoUri = process.env.mongoUri
 mongoose.connect(mongoUri)

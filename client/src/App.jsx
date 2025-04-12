@@ -8,6 +8,7 @@ import Background from './componants/background';
 import BrowsePage from './pages/browse';
 import Signin from './pages/auth';
 import Welcome from './api/welcome';
+import Watchlist from './pages/watchlist';
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/browse" element={<BrowsePage />} />
             <Route path="/auth" element={<Signin />}/>
             <Route path="/welcome" element={<Welcome />}/>
+            <Route path="/watchlist" element={<Watchlist />}/>
           </Routes>
         </main>
       </div>
