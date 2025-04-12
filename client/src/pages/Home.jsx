@@ -17,7 +17,7 @@ export default function Home() {
         try {
           const token = await getToken();
           console.log("Fetched token:", token);
-          await axios.post('http://localhost:5000/users/save-token', {
+          await axios.post('https://trackflix-api.vercel.app/users/save-token', {
             clerkId: userId,
             token: token,
           });
