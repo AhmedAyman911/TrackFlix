@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getTrendingMovies, getTrendingTVShows, getTopRatedTVShows, getTopRatedMovies } from "../api/tmbd";
 import MovieRow from "../componants/row";
-import SkeletonCard from "../componants/skeletonCard";
+import SkeletonCard from "../skeletonPages/skeletonCard";
 import axios from 'axios';
 import { useAuth } from '@clerk/clerk-react';
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
         try {
           const token = await getToken();
           console.log("Fetched token:", token);
-          await axios.post('http://localhost:5000/users/save-clerkId', {
+          await axios.post('https://trackflix-api.vercel.app/users/save-clerkId', {
             clerkId: userId
           });
           console.log("clerkId saved to DB successfully");
@@ -56,10 +56,10 @@ export default function Home() {
     }, []);
 
     if (isLoading) return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 md:px-20 pt-6 place-items-center">
-            {Array.from({ length: 12 }).map((_, i) => (
-                <SkeletonCard key={i} />
-            ))}
+        <div className="flex flex-col z-10 w-full md:max-w-[1280px] max-w-[400px] md:mx-auto pt-20 md:px-8 mx-auto">
+          {[...Array(4)].map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
         </div>
     );
 

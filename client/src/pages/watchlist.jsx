@@ -4,6 +4,7 @@ import { useUser } from '@clerk/clerk-react';
 import { getMediaDetails } from '../api/tmbd';
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
+import WatchlistSkeleton from '../skeletonPages/watchlistSkeleton';
 function Watchlist() {
   const [media, setMediaList] = useState([]);
   const { user, isLoaded } = useUser();
@@ -30,7 +31,7 @@ function Watchlist() {
         mediaId,
         status: newStatus,
       });
-  
+
       setMediaList((prev) =>
         prev.map((item) =>
           item.movie.id === mediaId
@@ -42,7 +43,7 @@ function Watchlist() {
       console.error('Failed to update status:', err);
     }
   };
-  
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchWatchlist = async () => {
@@ -67,6 +68,8 @@ function Watchlist() {
         setMediaList(mediaData);
       } catch (err) {
         console.error('Failed to fetch watchlist:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -75,10 +78,12 @@ function Watchlist() {
   const navigate = useNavigate();
   return (
     <div className="py-24">
-      {media.length > 0 ? (
+      {loading ? (
+        <WatchlistSkeleton />
+      ) : media.length > 0 ? (
         media.map((item, index) => (
-          <div className='md:px-20 px-12 opacity-0 animate-fade-in cursor-pointer'style={{ animationDelay: `${index * 300}ms` }}
-           onClick={() => navigate(`/${item.mediaType}/${item.movie.id}`)}>
+          <div className='md:px-20 px-12 opacity-0 animate-fade-in cursor-pointer' style={{ animationDelay: `${index * 300}ms` }}
+            onClick={() => navigate(`/${item.mediaType}/${item.movie.id}`)}>
             <div
               key={index}
               className="flex bg-white dark:bg-gray-900 shadow-md rounded-lg overflow-hidden mb-4 "
@@ -105,7 +110,7 @@ function Watchlist() {
                   <div className="mt-1 flex gap-3 items-center">
                     {item.status === 'plan to watch' && (
                       <button
-                        onClick={() => handleStatusUpdate(item.movie.id, 'watching')}
+                        onClick={(e) => { e.stopPropagation(); handleStatusUpdate(item.movie.id, 'watching') }}
                         className=" dark:text-white px-3 py-1 rounded hover:bg-red-700 text-sm border-2 border-red-600"
                       >
                         🎬 Start Watching
@@ -113,7 +118,7 @@ function Watchlist() {
                     )}
                     {item.status === 'watching' && (
                       <button
-                        onClick={() => handleStatusUpdate(item.movie.id, 'completed')}
+                        onClick={(e) => { e.stopPropagation(); handleStatusUpdate(item.movie.id, 'completed') }}
                         className="bg-grey-200 dark:text-gray-200 px-3 py-1 rounded hover:bg-green-600 text-sm border-2 border-green-400"
                       >
                         ✅ Mark as Completed
@@ -121,10 +126,15 @@ function Watchlist() {
                     )}
 
                     {item.status === 'completed' && (
-                      <span className="text-green-600 font-semibold text-sm">Watched</span>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleStatusUpdate(item.movie.id, 'plan to watch') }}
+                        className="bg-grey-200 dark:text-gray-200 px-3 py-1 rounded hover:bg-green-600 text-sm border-2 border-green-400 bg-green-600"
+                      >
+                        Watched
+                      </button>
                     )}
                     <button
-                      onClick={() => handleRemove(item.movie.id)}
+                      onClick={(e) => { e.stopPropagation(); handleRemove(item.movie.id) }}
                       className="w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-gray-200 flex items-center justify-center transition"
                       title="Remove"
                     >
@@ -137,7 +147,9 @@ function Watchlist() {
           </div>
         ))
       ) : (
-        <p className="text-gray-600 dark:text-gray-300">Your watchlist is empty.</p>
+        <div className="text-center text-gray-500 dark:text-gray-400 text-lg">
+          Your watchlist is empty
+        </div>
       )}
     </div>
   );

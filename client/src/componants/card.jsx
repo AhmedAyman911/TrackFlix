@@ -22,7 +22,7 @@ export default function MovieCard({ movie,mediaType , index }) {
             {movie.title || movie.name}
           </h3>
           <p className="inline-flex items-center text-xs md:text-sm text-gray-600 dark:text-gray-400">
-          {movie.vote_average ? movie.vote_average.toFixed(1) : "NY"} <StarIcon sx={{ fontSize: 14 }} className="text-yellow-400" /> | {(movie.release_date || movie.first_air_date || '').slice(0, 4)} | {movie.original_language || movie.origin_country}
+          {movie.vote_average ? movie.vote_average.toFixed(1) : "NY"} <StarIcon sx={{ fontSize: 14 }} className="text-yellow-400" /> | {(movie.release_date || movie.first_air_date || '').slice(0, 4)} | {movie.original_language?.toUpperCase() || movie.origin_country?.toUpperCase()}
           </p>
         </div>
       </div>

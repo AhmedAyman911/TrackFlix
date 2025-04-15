@@ -73,7 +73,14 @@ function AddToWatchlistButton({ mediaId, mediaType }) {
         }
       );
       console.log(res.data);
-      alert('Added to watchlist!');
+      setMediaList((prev) => [
+        ...prev,
+        {
+          mediaType,
+          status: 'plan to watch',
+          movie: { id: mediaId },
+        },
+      ]);
     } catch (error) {
       console.error('Error adding to watchlist:', error.response?.data || error.message);
       alert('Failed to add to watchlist');

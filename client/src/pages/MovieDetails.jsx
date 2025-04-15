@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CastCard from '../componants/castCard';
-import SkeletonCard from '../componants/skeletonCard';
+import SkeletonMovieDetail from '../skeletonPages/detailsSkeleton';
 import { getMediaDetails, getMediaVideos, getMediaProviders, getMediaCredits } from '../api/tmbd';
 import AddToWatchlistButton from '../componants/watchlistbutton';
 
@@ -46,10 +46,8 @@ export default function MovieDetails() {
 
 
     if (isLoading) return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 md:px-20 pt-6 place-items-center">
-            {Array.from({ length: 12 }).map((_, i) => (
-                <SkeletonCard key={i} />
-            ))}
+        <div className="pt-12">
+            <SkeletonMovieDetail/>
         </div>
     );
 
