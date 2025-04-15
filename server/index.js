@@ -26,7 +26,14 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use('/users', userRoutes);
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+app.use(express.json());
 app.use('/watchlist', watchlistRoutes);
+
 app.use(express.json());
 const mongoUri = process.env.mongoUri
 mongoose.connect(mongoUri)

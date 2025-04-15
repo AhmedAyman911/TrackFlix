@@ -6,7 +6,7 @@ const WatchlistSchema = new mongoose.Schema({
   mediaType: { type: String, enum: ['movie', 'tv'], required: true },
   status: { 
     type: String,
-    enum: ['watching', 'completed', 'plan to watch', 'dropped'],
+    enum: ['watching', 'completed', 'plan to watch'],
     default: 'plan to watch'
   },
   addedAt: { type: Date, default: Date.now },

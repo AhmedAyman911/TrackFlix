@@ -1,11 +1,48 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useUser } from '@clerk/clerk-react';
-import MovieCard from '../componants/card';
 import { getMediaDetails } from '../api/tmbd';
+import StarIcon from '@mui/icons-material/Star';
+import { useNavigate } from 'react-router-dom';
 function Watchlist() {
-    const [mediaList, setMediaList] = useState([]);
+  const [media, setMediaList] = useState([]);
   const { user, isLoaded } = useUser();
+  const handleRemove = async (mediaId) => {
+    try {
+      console.log("Sending:", user.id, mediaId);
+      await axios.delete('https://trackflix-api.vercel.app/watchlist/remove', {
+        data: {
+          clerkId: user.id,
+          mediaId,
+        },
+      });
+      setMediaList((prev) => prev.filter((m) => m.movie.id !== mediaId));
+    } catch (err) {
+      console.error('Failed to remove from watchlist:', err);
+    }
+  };
+
+
+  const handleStatusUpdate = async (mediaId, newStatus) => {
+    try {
+      await axios.patch('https://trackflix-api.vercel.app/watchlist/update-status', {
+        clerkId: user.id,
+        mediaId,
+        status: newStatus,
+      });
+  
+      setMediaList((prev) =>
+        prev.map((item) =>
+          item.movie.id === mediaId
+            ? { ...item, status: newStatus }
+            : item
+        )
+      );
+    } catch (err) {
+      console.error('Failed to update status:', err);
+    }
+  };
+  
 
   useEffect(() => {
     const fetchWatchlist = async () => {
@@ -21,9 +58,10 @@ function Watchlist() {
             const data = await getMediaDetails(item.mediaType, item.mediaId);
             return {
               mediaType: item.mediaType,
+              status: item.status,
               movie: data,
             };
-          })
+          }),
         );
 
         setMediaList(mediaData);
@@ -34,19 +72,76 @@ function Watchlist() {
 
     fetchWatchlist();
   }, [isLoaded, user]);
-
+  const navigate = useNavigate();
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4 pt-20">
-      {mediaList.map((item, index) => (
-        <MovieCard
-          key={item.movie.id}
-          movie={item.movie}
-          mediaType={item.mediaType}
-          index={index}
-        />
-      ))}
+    <div className="py-24">
+      {media.length > 0 ? (
+        media.map((item, index) => (
+          <div className='md:px-20 px-12 opacity-0 animate-fade-in cursor-pointer'style={{ animationDelay: `${index * 300}ms` }}
+           onClick={() => navigate(`/${item.mediaType}/${item.movie.id}`)}>
+            <div
+              key={index}
+              className="flex bg-white dark:bg-gray-900 shadow-md rounded-lg overflow-hidden mb-4 "
+            >
+              <img
+                src={`https://image.tmdb.org/t/p/w200${item.movie.poster_path}`}
+                alt={item.movie.title || item.movie.name}
+                className="w-24 md:w-32 object-cover"
+              />
+              <div className="p-4 flex flex-row flex-1 items-end">
+                <div className='text-left'>
+                  <h1 className="text-xl font-bold text-red-600">
+                    {item.movie.title || item.movie.name}
+                  </h1>
+                  <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mt-1">
+                    {item.movie.vote_average ? item.movie.vote_average.toFixed(1) : "N/A"}
+                    <StarIcon sx={{ fontSize: 16, marginLeft: '4px' }} className="text-yellow-400" /> | {" "}
+                    {item.movie.release_date?.slice(0, 4) || item.movie.first_air_date?.slice(0, 4)}{" "}
+                    | {item.movie.original_language?.toUpperCase()}
+                  </div>
+                  <p className="text-md text-gray-600 dark:text-gray-400 line-clamp-1">
+                    {item.movie.overview}
+                  </p>
+                  <div className="mt-1 flex gap-3 items-center">
+                    {item.status === 'plan to watch' && (
+                      <button
+                        onClick={() => handleStatusUpdate(item.movie.id, 'watching')}
+                        className=" dark:text-white px-3 py-1 rounded hover:bg-red-700 text-sm border-2 border-red-600"
+                      >
+                        🎬 Start Watching
+                      </button>
+                    )}
+                    {item.status === 'watching' && (
+                      <button
+                        onClick={() => handleStatusUpdate(item.movie.id, 'completed')}
+                        className="bg-grey-200 dark:text-gray-200 px-3 py-1 rounded hover:bg-green-600 text-sm border-2 border-green-400"
+                      >
+                        ✅ Mark as Completed
+                      </button>
+                    )}
+
+                    {item.status === 'completed' && (
+                      <span className="text-green-600 font-semibold text-sm">Watched</span>
+                    )}
+                    <button
+                      onClick={() => handleRemove(item.movie.id)}
+                      className="w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-gray-200 flex items-center justify-center transition"
+                      title="Remove"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-gray-600 dark:text-gray-300">Your watchlist is empty.</p>
+      )}
     </div>
   );
+
 }
 
 export default Watchlist;

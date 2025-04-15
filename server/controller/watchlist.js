@@ -31,6 +31,7 @@ export const addToWatchlist = async (req, res) => {
   
   // Remove from watchlist
   export const removeFromWatchlist = async (req, res) => {
+    console.log("Received delete request with body:", req.body);
     const { clerkId, mediaId } = req.body;
   
     try {

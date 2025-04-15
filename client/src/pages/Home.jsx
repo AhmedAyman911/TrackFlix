@@ -17,13 +17,12 @@ export default function Home() {
         try {
           const token = await getToken();
           console.log("Fetched token:", token);
-          await axios.post('https://trackflix-api.vercel.app/users/save-token', {
-            clerkId: userId,
-            token: token,
+          await axios.post('http://localhost:5000/users/save-clerkId', {
+            clerkId: userId
           });
-          console.log("Token saved to DB successfully");
+          console.log("clerkId saved to DB successfully");
         } catch (error) {
-          console.error("Error saving token:", error);
+          console.error("Error saving clerkId:", error);
         }
       };
   
