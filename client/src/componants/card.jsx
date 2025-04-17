@@ -9,7 +9,7 @@ export default function MovieCard({ movie,mediaType , index }) {
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <div
-        className="bg-white w-32 md:w-48 md:h-[365px] h-[265px] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition  duration-300 hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-red-600"
+        className="bg-white w-32 md:w-48 md:h-[365px] h-[265px] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transform transition  duration-300 hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-red-600 cursor-pointer"
         onClick={() => navigate(`/${mediaType}/${movie.id}`)}
       >
         <img

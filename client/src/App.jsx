@@ -9,6 +9,7 @@ import BrowsePage from './pages/browse';
 import Signin from './pages/auth';
 import Welcome from './api/welcome';
 import Watchlist from './pages/watchlist';
+import Footer from './componants/footer';
 function App() {
 
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/watchlist" element={<Watchlist />}/>
           </Routes>
         </main>
+        <Footer/>
       </div>
     </Router>
   )

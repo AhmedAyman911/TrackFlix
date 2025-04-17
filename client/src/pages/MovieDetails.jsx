@@ -13,6 +13,7 @@ export default function MovieDetails() {
     const [cast, setCast] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
+        window.scrollTo(0, 0);
         const fetchAll = async () => {
             const start = Date.now();
 

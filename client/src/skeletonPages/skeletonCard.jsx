@@ -1,8 +1,8 @@
 export default function SkeletonCard({ count = 6 }) {
   return (
     <div className="px-6 py-6">
-      <div className="h-4 md:h-8 bg-gray-300 dark:bg-gray-700 rounded-lg w-48 mb-4 animate-pulse opacity-0 "></div>
-      <div className="overflow-x-auto scrollbar-hide scroll-smooth flex space-x-3 snap-x snap-mandatory ">
+      <div className="h-4 md:h-8 bg-gray-300 dark:bg-gray-700 rounded-lg w-48 mb-4 animate-pulse opacity-0"></div>
+      <div className="overflow-x-auto scrollbar-hide scroll-smooth flex space-x-3 snap-x snap-mandatory">
         {[...Array(count)].map((_, index) => (
           <div key={index} className="snap-start opacity-0 animate-fade-in pr-[15px]">
             <div className="bg-white w-32 md:w-48 md:h-[365px] h-[265px] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
@@ -16,5 +16,6 @@ export default function SkeletonCard({ count = 6 }) {
         ))}
       </div>
     </div>
+
   );
 }
