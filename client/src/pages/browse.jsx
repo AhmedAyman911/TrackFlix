@@ -36,6 +36,7 @@ const Browse = () => {
 
   const goToPage = (newPage) => {
     setSearchParams({ type, page: newPage });
+    window.scrollTo(0, 0);
   };
   
   

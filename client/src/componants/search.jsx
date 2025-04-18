@@ -49,7 +49,7 @@ export default function SearchBar() {
                             className="w-10 h-14 object-cover rounded hidden md:block"
                         />
                     ) : (
-                        <div className="w-10 h-14 bg-gray-300 dark:bg-gray-700 rounded flex items-center justify-center text-xs text-gray-500 hidden md:block">
+                        <div className="w-10 h-14 bg-gray-300 dark:bg-gray-700 rounded items-center justify-center text-xs text-gray-500 hidden md:block">
                             N/A
                         </div>
                     )}
@@ -103,7 +103,7 @@ export default function SearchBar() {
                     <>
                         <form
                             onSubmit={handleSearch}
-                            className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 px-3 py-2 h-10 rounded-full w-full"
+                            className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 px-3 py-2 md:h-10 h-8 rounded-full w-full"
                         >
                             <Search className="w-4 h-4 text-gray-500" />
                             <input
