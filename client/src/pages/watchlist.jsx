@@ -95,7 +95,7 @@ function Watchlist() {
               />
               <div className="p-4 flex flex-row flex-1 items-end">
                 <div className='text-left'>
-                  <h1 className="text-xl font-bold text-red-600">
+                  <h1 className="text-xl font-bold text-red-600 line-clamp-2">
                     {item.movie.title || item.movie.name}
                   </h1>
                   <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mt-1">
@@ -111,7 +111,7 @@ function Watchlist() {
                     {item.status === 'plan to watch' && (
                       <button
                         onClick={(e) => { e.stopPropagation(); handleStatusUpdate(item.movie.id, 'watching') }}
-                        className=" dark:text-white px-3 py-1 rounded hover:bg-red-700 text-sm border-2 border-red-600"
+                        className=" dark:text-white px-3 py-1 rounded hover:bg-red-700 md:text-sm text-xs border-2 border-red-600"
                       >
                         🎬 Start Watching
                       </button>
@@ -119,7 +119,7 @@ function Watchlist() {
                     {item.status === 'watching' && (
                       <button
                         onClick={(e) => { e.stopPropagation(); handleStatusUpdate(item.movie.id, 'completed') }}
-                        className="bg-grey-200 dark:text-gray-200 px-3 py-1 rounded hover:bg-green-600 text-sm border-2 border-green-400"
+                        className="bg-grey-200 dark:text-gray-200 px-3 py-1 rounded hover:bg-green-600 md:text-sm text-xs border-2 border-green-400"
                       >
                         ✅ Mark as Completed
                       </button>

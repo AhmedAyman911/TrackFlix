@@ -65,6 +65,7 @@ export default function MovieDetails() {
                     }}
                 >
                     <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
+                    
                 </div>
                 <div className="relative z-10 flex items-center justify-left h-full">
                     <div className="flex flex-col md:flex-row items-center md:items-end gap-6 px-6 md:px-20 w-full max-w-screen-xl py-10 md:py-0 transition duration-100 animate-fade-in">
@@ -75,7 +76,7 @@ export default function MovieDetails() {
                                 className="w-40 md:w-72 rounded-xl shadow-lg object-cover"
                             />
                         </div>
-                        <div className="flex-1 text-center md:text-left">
+                        <div className="flex-1 text-left">
                             <h1 className="text-3xl md:text-4xl font-bold mb-2 text-red-600">{movie.title || movie.name}</h1>
                             <p className="text-sm text-yellow-300 mb-1">
                                 ⭐ {movie.vote_average?.toFixed(1)} | {movie.release_date?.slice(0, 4) || movie.first_air_date?.slice(0, 4)}
