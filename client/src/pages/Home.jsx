@@ -59,10 +59,7 @@ export default function Home() {
 
   if (isLoading) return (
     <div className="flex flex-col z-10 w-full md:max-w-[1280px] max-w-[400px] md:mx-auto pt-24 md:px-8 mx-auto">
-      {/* Render Hero once */}
       <HeroSkeleton />
-  
-      {/* Render multiple card rows */}
       {[...Array(4)].map((_, index) => (
         <SkeletonCard key={index} />
       ))}

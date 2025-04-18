@@ -37,13 +37,14 @@ export default function Navbar() {
         <div className="flex items-center space-x-4">
           <button
             className="font-semibold text-gray-700 dark:text-white hover:text-red-500 dark:hover:text-red-500"
-            onClick={() => handleNavigation("/browse?type=movie")}
+            onClick={() => handleNavigation(`/browse?type=movie&page=1`)}
+
           >
             Movies
           </button>
           <button
             className="font-semibold text-gray-700 dark:text-white hover:text-red-500 dark:hover:text-red-500"
-            onClick={() => handleNavigation("/browse?type=tv")}
+            onClick={() => handleNavigation("/browse?type=tv&page=1")}
           >
             shows
           </button>

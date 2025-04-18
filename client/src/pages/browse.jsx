@@ -1,9 +1,10 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { discover, getGenres } from "../api/tmbd";
 import MovieCard from "../componants/card";
+
 const Browse = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const type = searchParams.get("type") || "movie";
   const [items, setItems] = useState([]);
   const [genres, setGenres] = useState([]);
@@ -18,7 +19,7 @@ const Browse = () => {
     { code: "ko", name: "Korean" },
     { code: "hi", name: "Indian" },
   ]);
-  const [page, setPage] = useState(1);
+  
   const [totalPages, setTotalPages] = useState(1);
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [tempSelectedGenres, setTempSelectedGenres] = useState([]);
@@ -29,7 +30,18 @@ const Browse = () => {
   const selectedGenres = type === "movie" ? movieFilters.genres : tvFilters.genres;
   const sortBy = type === "movie" ? movieFilters.sortBy : tvFilters.sortBy;
   const [showFilters, setShowFilters] = useState(false);
+  
+  
+  const page = Number(searchParams.get("page")) || 1;
 
+  const goToPage = (newPage) => {
+    setSearchParams({ type, page: newPage });
+  };
+  
+  
+
+
+  
   useEffect(() => {
     const fetchItems = async () => {
       const filters = type === "movie" ? movieFilters : tvFilters;
@@ -54,7 +66,7 @@ const Browse = () => {
     };
 
     fetchGenres();
-    setPage(1);
+    
 
     const stored = localStorage.getItem(`${type}-filters`);
     const savedFilters = stored ? JSON.parse(stored) : { genres: [], sortBy: "", language: "" };
@@ -90,7 +102,7 @@ const Browse = () => {
     } else {
       setTvFilters(filters);
     }
-    setPage(1);
+    goToPage(1);
     setShowFilters(false);
   };
 
@@ -106,7 +118,7 @@ const Browse = () => {
     setTempSortBy("");
     setTempSelectedLanguage("");
 
-    setPage(1);
+    goToPage(1);
   };
 
 
@@ -205,7 +217,8 @@ const Browse = () => {
           <div className="flex justify-center gap-2 mt-10 dark:text-white">
             <button
               className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-              onClick={() => setPage((p) => Math.max(p - 1, 1))}
+              onClick={() => goToPage(Math.max(page - 1, 1))}
+              disabled={page == 1}
             >
               Prev
             </button>
@@ -214,7 +227,7 @@ const Browse = () => {
             </span>
             <button
               className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => goToPage(page + 1)}
               disabled={page >= totalPages}
             >
               Next
