@@ -44,9 +44,9 @@ export default function SearchBar() {
                     className="flex items-center gap-3 px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 "
                     onClick={() => handleSelect(item)}
                 >
-                    {item.poster_path ? (
+                    {item.poster_path|| item.profile_path ? (
                         <img
-                            src={`https://image.tmdb.org/t/p/w92${item.poster_path}`}
+                        src={`https://image.tmdb.org/t/p/w92${item.poster_path ? item.poster_path : item.profile_path}`}
                             alt={item.title || item.name}
                             className="w-10 h-14 object-cover rounded hidden md:block"
                         />

@@ -127,7 +127,7 @@ export default function MovieDetails() {
             <div className="mt-6">
                 <h2 className="text-2xl font-bold mb-4 dark:text-white text-left px-6 md:px-20">Cast</h2>
                 <div className="flex overflow-x-auto gap-5 px-6 py-2 md:px-20">
-                    {cast.slice(0, 11).map((actor, index) => (
+                    {cast.slice(0, 10).map((actor, index) => (
                         <div
                             key={actor.id}
                             className={`opacity-0 animate-fade-in`}

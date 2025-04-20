@@ -91,3 +91,26 @@ export const getGenres = async (type) => {
   console.log(res.data)
   return res.data;
 };
+
+
+export const getActorInfo = async (personId) => {
+  try {
+    const res = await axiosTMDB.get(`/person/${personId}`);
+    console.log(res.data)
+    return res.data;
+  } catch (error) {
+    console.error('Failed to fetch Actor info:', error);
+    return [];
+  }
+};
+
+export const getActorCridits = async (personId) => {
+  try {
+    const res = await axiosTMDB.get(`/person/${personId}/combined_credits`);
+    console.log(res.data.cast)
+    return res.data.cast;
+  } catch (error) {
+    console.error('Failed to fetch Actor credits:', error);
+    return [];
+  }
+};

@@ -12,6 +12,7 @@ import Watchlist from './pages/watchlist';
 import Footer from './componants/footer';
 import SearchResults from './pages/search';
 import CastPage from './pages/cast';
+import ActorPage from './pages/person';
 function App() {
 
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/welcome" element={<Welcome />}/>
             <Route path="/watchlist" element={<Watchlist />}/>
             <Route path="/cast" element={<CastPage />} />
+            <Route path="/person/:id" element={<ActorPage />} />
           </Routes>
         </main>
         <Footer/>
