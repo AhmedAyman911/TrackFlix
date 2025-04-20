@@ -93,7 +93,7 @@ function AddToWatchlistButton({ mediaId, mediaType }) {
     <div>
       {snackbarVisible && (
               <div
-                className="fixed top-0 justify-center bg-red-500 text-white py-2 px-4 rounded shadow-md animate-fade-in-out"
+                className="fixed ml-48 mt-4 justify-center bg-red-500 text-white py-2 px-4 rounded shadow-md animate-fade-in-out"
               >
                 Please SignIn!
               </div>
