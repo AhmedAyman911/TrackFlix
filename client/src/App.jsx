@@ -11,6 +11,7 @@ import Welcome from './api/welcome';
 import Watchlist from './pages/watchlist';
 import Footer from './componants/footer';
 import SearchResults from './pages/search';
+import CastPage from './pages/cast';
 function App() {
 
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/auth" element={<Signin />}/>
             <Route path="/welcome" element={<Welcome />}/>
             <Route path="/watchlist" element={<Watchlist />}/>
+            <Route path="/cast" element={<CastPage />} />
           </Routes>
         </main>
         <Footer/>

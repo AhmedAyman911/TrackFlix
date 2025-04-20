@@ -4,8 +4,11 @@ import CastCard from '../componants/castCard';
 import SkeletonMovieDetail from '../skeletonPages/detailsSkeleton';
 import { getMediaDetails, getMediaVideos, getMediaProviders, getMediaCredits } from '../api/tmbd';
 import AddToWatchlistButton from '../componants/watchlistbutton';
+import { CircleArrowRight } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 export default function MovieDetails() {
+    const navigate = useNavigate();
     const { id, type } = useParams();
     const [movie, setMovie] = useState(null);
     const [videos, setVideos] = useState([]);
@@ -48,7 +51,7 @@ export default function MovieDetails() {
 
     if (isLoading) return (
         <div className="pt-12">
-            <SkeletonMovieDetail/>
+            <SkeletonMovieDetail />
         </div>
     );
 
@@ -65,7 +68,7 @@ export default function MovieDetails() {
                     }}
                 >
                     <div className="w-full h-full bg-black/50 backdrop-blur-sm" />
-                    
+
                 </div>
                 <div className="relative z-10 flex items-center justify-left h-full">
                     <div className="flex flex-col md:flex-row items-center md:items-end gap-6 px-6 md:px-20 w-full max-w-screen-xl py-10 md:py-0 transition duration-100 animate-fade-in">
@@ -78,10 +81,10 @@ export default function MovieDetails() {
                         </div>
                         <div className="flex-1 text-left">
                             <h1 className="text-3xl md:text-4xl font-bold mb-2 text-red-600">{movie.title || movie.name}</h1>
-                            <p className="text-sm text-yellow-300 mb-1">
+                            <p className="text-sm dark:text-yellow-300 text-yellow-500 mb-1">
                                 ⭐ {movie.vote_average?.toFixed(1)} | {movie.release_date?.slice(0, 4) || movie.first_air_date?.slice(0, 4)}
                             </p>
-                            <p className="text-sm text-blue-300 mb-2">
+                            <p className="text-sm dark:text-blue-300 text-blue-500 mb-2">
                                 🎭 {movie.genres?.map((g) => g.name).join(', ')} |
                                 {movie.runtime ? (
                                     ` ⏱ ${movie.runtime} min`
@@ -90,11 +93,11 @@ export default function MovieDetails() {
                                 )} | 🌐 {movie.spoken_languages?.[0]?.english_name}
                             </p>
 
-                            <p className="text-md text-gray-200 italic mb-2">{movie.tagline}</p>
-                            <p className="text-md text-gray-300">{movie.overview}</p>
+                            <p className="text-md dark:text-gray-200 md:text-gray-200 text-gray-600 italic mb-2">{movie.tagline}</p>
+                            <p className="text-md dark:text-gray-300 md:text-gray-300 text-gray-700">{movie.overview}</p>
                             {providers.length > 0 && (
                                 <div className="mt-4">
-                                    <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                                    <div className="flex flex-wrap gap-4 justify-start md:justify-start">
                                         {providers.map((p) => (
                                             <div
                                                 key={p.provider_id}
@@ -133,7 +136,13 @@ export default function MovieDetails() {
                             <CastCard actor={actor} />
                         </div>
                     ))}
+                    <button
+                    onClick={() => navigate("/cast", { state: { cast: cast, movie: movie } })} 
+                    className='flex items-center rounded-lg shadow-lgtransition p-1 whitespace-nowrap hover:text-red-600'>
+                        View all<CircleArrowRight className='ml-1 mr-4' />
+                    </button>
                 </div>
+
             </div>
 
 
@@ -141,7 +150,7 @@ export default function MovieDetails() {
                 <div className="mt-10 px-6 md:px-20">
                     <h2 className="text-2xl font-semibold dark:text-white mb-4 text-left">Official Trailers</h2>
                     <div className="flex overflow-x-auto gap-6 pb-4">
-                        {videos.slice(0,3).map((trailer) => (
+                        {videos.slice(0, 3).map((trailer) => (
                             <div key={trailer.id} className="min-w-[320px] md:min-w-[480px] aspect-video rounded-xl overflow-hidden shadow-lg">
                                 <iframe
                                     src={`https://www.youtube.com/embed/${trailer.key}`}
