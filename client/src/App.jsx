@@ -10,6 +10,7 @@ import Signin from './pages/auth';
 import Welcome from './api/welcome';
 import Watchlist from './pages/watchlist';
 import Footer from './componants/footer';
+import SearchResults from './pages/search';
 function App() {
 
   return (
@@ -20,6 +21,7 @@ function App() {
         <main className='flex-1'>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path='/search/:searchTerm' element={<SearchResults/>}/>
             <Route path="/:type/:id" element={<MovieDetails />} />
             <Route path="/browse" element={<BrowsePage />} />
             <Route path="/auth" element={<Signin />}/>

@@ -75,7 +75,7 @@ export default function Navbar() {
             </SignedIn>
 
             <SignedOut>
-              <Link to="/auth" className="text-sm border px-3 py-1 rounded hover:text-red-500">
+              <Link to="/auth" className="text-sm border md:w-20 px-2 py-1 rounded hover:text-red-500">
                 Sign In
               </Link>
             </SignedOut>

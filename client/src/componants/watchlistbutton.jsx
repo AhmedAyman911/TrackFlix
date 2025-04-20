@@ -6,6 +6,7 @@ function AddToWatchlistButton({ mediaId, mediaType }) {
   const { getToken, userId } = useAuth();
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [media, setMediaList] = useState([]);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   useEffect(() => {
     const fetchWatchlist = async () => {
@@ -83,18 +84,27 @@ function AddToWatchlistButton({ mediaId, mediaType }) {
       ]);
     } catch (error) {
       console.error('Error adding to watchlist:', error.response?.data || error.message);
-      alert('Failed to add to watchlist');
+      setSnackbarVisible(true);
+      setTimeout(() => setSnackbarVisible(false), 3000);
     }
   };
 
   return (
+    <div>
+      {snackbarVisible && (
+              <div
+                className="fixed top-0 justify-center bg-red-500 text-white py-2 px-4 rounded shadow-md animate-fade-in-out"
+              >
+                Please SignIn!
+              </div>
+            )}
     <button
       onClick={isInWatchlist ? () => handleRemove(mediaId) : handleAddToWatchlist}
-      className={`px-4 py-2 mt-4 rounded text-white ${isInWatchlist ? 'bg-gray-600 hover:bg-red-700 border-2 border-red-600' : 'bg-red-600 hover:bg-red-700'
-        }`}
+      className={`px-4 py-2 mt-4 rounded text-white ${isInWatchlist ? 'bg-gray-600 hover:bg-red-700 border-2 border-red-600' : 'bg-red-600 hover:bg-red-700'}`}
     >
       {isInWatchlist ? '✕ Remove from Watchlist' : '+ Add to Watchlist'}
-    </button>
+      
+    </button></div>
   );
 }
 

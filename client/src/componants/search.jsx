@@ -23,7 +23,7 @@ export default function SearchBar() {
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
-            navigate(`/search/${searchTerm}`);
+            navigate(`/search/${searchTerm}`, { state: { results: suggestions } });
             setSuggestions([]);
         }
     };
