@@ -18,7 +18,8 @@ export default function SearchResults() {
         const fetchResults = async () => {
             if (!searchTerm) return;
             const res = await searchMulti(searchTerm, page);
-            setSearchResults(res.results);
+            const sortedResults = res.results.sort((a, b) => b.popularity - a.popularity);
+            setSearchResults(sortedResults);
             setTotalPages(res.total_pages);
         };
 
