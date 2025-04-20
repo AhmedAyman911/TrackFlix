@@ -12,7 +12,9 @@ export default function SearchBar() {
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
             if (searchTerm.trim().length > 1) {
-                searchMulti(searchTerm).then(setSuggestions);
+                searchMulti(searchTerm).then(res => {
+                    setSuggestions(res.results);
+                  });
             } else {
                 setSuggestions([]);
             }
