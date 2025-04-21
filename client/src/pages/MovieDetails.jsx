@@ -115,7 +115,7 @@ export default function MovieDetails() {
                   {season.vote_average ? season.vote_average.toFixed(1) : "N/A"}
                   <StarIcon sx={{ fontSize: 16, marginLeft: '4px' }} className="text-yellow-400" />
                   {" | "}
-                  {season.air_date?.slice(0, 4) || "Unknown Year"}
+                  {season.air_date?.slice(0, 4) || "Unknown Year"}{" | "}🎞 {season.episode_count} Episodes
                 </div>
       
               </div>
