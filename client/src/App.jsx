@@ -13,6 +13,7 @@ import Footer from './componants/footer';
 import SearchResults from './pages/search';
 import CastPage from './pages/cast';
 import ActorPage from './pages/person';
+import SeasonPage from './pages/seasonPage';
 function App() {
 
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/watchlist" element={<Watchlist />}/>
             <Route path="/cast" element={<CastPage />} />
             <Route path="/person/:id" element={<ActorPage />} />
+            <Route path="/tv/:id/season/:seasonNumber" element={<SeasonPage />} />
           </Routes>
         </main>
         <Footer/>

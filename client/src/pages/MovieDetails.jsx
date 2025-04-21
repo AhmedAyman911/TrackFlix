@@ -2,11 +2,11 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CastCard from '../componants/castCard';
 import SkeletonMovieDetail from '../skeletonPages/detailsSkeleton';
-import { getMediaDetails, getMediaVideos, getMediaProviders, getMediaCredits } from '../api/tmbd';
+import { getMediaDetails, getMediaVideos, getMediaProviders, getMediaCredits, getSeasonDetails } from '../api/tmbd';
 import AddToWatchlistButton from '../componants/watchlistbutton';
 import { CircleArrowRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-
+import StarIcon from '@mui/icons-material/Star';
 export default function MovieDetails() {
     const navigate = useNavigate();
     const { id, type } = useParams();
@@ -15,6 +15,8 @@ export default function MovieDetails() {
     const [providers, setProvider] = useState([]);
     const [cast, setCast] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [seasons, setSeasons] = useState([]);
+
     useEffect(() => {
         window.scrollTo(0, 0);
         const fetchAll = async () => {
@@ -39,6 +41,26 @@ export default function MovieDetails() {
 
             setCast(credits?.cast || []);
 
+            if (type === "tv") {
+                try {
+                    const seasonsData = details?.seasons || [];
+
+                    const seasonsWithEpisodes = await Promise.all(
+                        seasonsData.map(async (season) => {
+                            const seasonDetails = await getSeasonDetails(id, season.season_number);
+                            return {
+                                ...season,
+                                episodes: seasonDetails.episodes || [],
+                            };
+                        })
+                    );
+                    console.log(seasonsWithEpisodes)
+                    setSeasons(seasonsWithEpisodes);
+                } catch (error) {
+                    console.error("Failed to fetch seasons and episodes:", error);
+                }
+            }
+
             const elapsed = Date.now() - start;
             const delay = Math.max(0, 1000 - elapsed);
             setTimeout(() => setIsLoading(false), delay);
@@ -49,11 +71,59 @@ export default function MovieDetails() {
 
 
 
+
     if (isLoading) return (
         <div className="pt-12">
             <SkeletonMovieDetail />
         </div>
     );
+
+
+    const SeasonCard = ({ season, index }) => {
+        const navigate = useNavigate();
+      
+        const handleOpenSeasonPage = () => {
+          navigate(`/tv/${season.show_id}/season/${season.season_number}`, { state: { season } });
+        };
+      
+        return (
+          <div
+            className="md:px-20 px-6 opacity-0 animate-fade-in cursor-pointer"
+            style={{ animationDelay: `${index * 300}ms`, animationFillMode: "forwards" }}
+            onClick={handleOpenSeasonPage}
+          >
+            <div className="flex flex-col md:flex-row bg-white dark:bg-gray-900 shadow-md rounded-lg overflow-hidden mb-6">
+              <img
+                src={season.poster_path
+                  ? `https://image.tmdb.org/t/p/w200${season.poster_path}`
+                  : '/no-image.png'}
+                alt={season.name}
+                className="w-32 md:w-40 object-cover"
+              />
+              <div className="p-4 flex flex-col justify-end flex-1">
+                
+                <div className="text-left">
+                  <h1 className="text-lg md:text-xl font-bold text-red-600 line-clamp-2">
+                    {season.name}
+                  </h1>
+                  <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2 line-clamp-3">
+                    {season.overview || "No overview available."}
+                  </p>
+                </div>
+      
+                <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mt-4">
+                  {season.vote_average ? season.vote_average.toFixed(1) : "N/A"}
+                  <StarIcon sx={{ fontSize: 16, marginLeft: '4px' }} className="text-yellow-400" />
+                  {" | "}
+                  {season.air_date?.slice(0, 4) || "Unknown Year"}
+                </div>
+      
+              </div>
+            </div>
+          </div>
+        );
+      };
+
 
 
     return (
@@ -137,8 +207,8 @@ export default function MovieDetails() {
                         </div>
                     ))}
                     <button
-                    onClick={() => navigate("/cast", { state: { cast: cast, movie: movie } })} 
-                    className='flex items-center rounded-lg shadow-lgtransition p-1 whitespace-nowrap hover:text-red-600'>
+                        onClick={() => navigate("/cast", { state: { cast: cast, movie: movie } })}
+                        className='flex items-center rounded-lg shadow-lgtransition p-1 whitespace-nowrap hover:text-red-600'>
                         View all<CircleArrowRight className='ml-1 mr-4' />
                     </button>
                 </div>
@@ -162,6 +232,17 @@ export default function MovieDetails() {
                             </div>
                         ))}
                     </div>
+                </div>
+            )}
+
+            {type === 'tv' && seasons.length > 0 && (
+                <div className="">
+                    <h2 className="text-2xl font-semibold dark:text-white mb-4 text-left mt-10 px-6 md:px-20">
+                        Seasons
+                    </h2>
+                    {seasons.map((season, index) => (
+                        <SeasonCard key={season.id} season={{ ...season, show_id: movie.id }} index={index} />
+                    ))}
                 </div>
             )}
 

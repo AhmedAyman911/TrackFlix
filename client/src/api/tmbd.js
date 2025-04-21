@@ -114,3 +114,14 @@ export const getActorCridits = async (personId) => {
     return [];
   }
 };
+
+export const getSeasonDetails = async (tvId, seasonNumber) => {
+  try {
+    const res = await axiosTMDB.get(`/tv/${tvId}/season/${seasonNumber}`);
+    console.log(res.data)
+    return res.data;
+  } catch (error) {
+    console.error(`Failed to fetch Season ${seasonNumber}:`, error);
+    return {};
+  }
+};
