@@ -8,7 +8,7 @@ import { CircleArrowRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import StarIcon from '@mui/icons-material/Star';
 import { FastAverageColor } from 'fast-average-color';
-
+import { useMediaQuery } from 'react-responsive';
 export default function MovieDetails() {
     const navigate = useNavigate();
     const { id, type } = useParams();
@@ -18,9 +18,8 @@ export default function MovieDetails() {
     const [cast, setCast] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [seasons, setSeasons] = useState([]);
-
     const [bgColor, setBgColor] = useState('#1f2937');
-
+    const isDesktop = useMediaQuery({ minWidth: 768 });
     useEffect(() => {
         window.scrollTo(0, 0);
         const fetchAll = async () => {
@@ -76,10 +75,12 @@ export default function MovieDetails() {
             };
 
             const elapsed = Date.now() - start;
-            const delay = Math.max(0, 2000 - elapsed);
+            const delay = Math.max(0, 1800 - elapsed);
             setTimeout(() => setIsLoading(false), delay);
+            
         };
         fetchAll();
+        
     }, [type, id]);
 
 
@@ -143,13 +144,15 @@ export default function MovieDetails() {
             </div>
         );
     };
+    
 
 
-
+    
     return (
         <div className="py-16 transition duration-300 animate-fade-in dark:bg-gray-900 min-h-screen flex flex-col ">
+            
             <div className="relative w-full h-auto md:h-[500px] text-white overflow-hidden"
-                style={{ backgroundColor: bgColor }}
+                 style={{ backgroundColor: isDesktop ? bgColor : undefined }}
             >
                 <div
                     className="hidden md:block absolute top-0 w-full h-full bg-cover bg-right bg-no-repeat"
