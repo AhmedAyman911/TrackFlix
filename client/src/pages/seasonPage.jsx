@@ -1,11 +1,72 @@
 import { useLocation } from "react-router-dom";
 import StarIcon from '@mui/icons-material/Star';
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuth } from '@clerk/clerk-react';
 const SeasonPage = () => {
+
+    const [media, setMediaList] = useState([]);
+    const { getToken, userId } = useAuth();
+
+    const handleRemove = async (mediaId) => {
+        try {
+            console.log("Sending:", userId, mediaId);
+            await axios.delete('https://trackflix-api.vercel.app/watchedEpisodes/remove', {
+                data: {
+                    clerkId: userId,
+                    episodeId: mediaId,
+                },
+            });
+            setMediaList((prevMedia) => prevMedia.filter((item) => String(item.episodeId) !== String(mediaId)));
+        } catch (err) {
+            console.error('Failed to remove from watchlist:', err);
+        }
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0);
-    });
+        const fetchwatchedEpisodes = async () => {
+            try {
+                const clerkId = userId;
+                const res = await axios.get(`https://trackflix-api.vercel.app/watchedEpisodes/${clerkId}`);
+                const items = res.data;
+                setMediaList(items);
+            } catch (err) {
+                console.error('Failed to fetch watched Episodes:', err);
+            }
+        };
+
+        fetchwatchedEpisodes();
+    }, [userId]);
+    const [snackbarVisible, setSnackbarVisible] = useState(null);
+    const handleAddToWatchlist = async (mediaId) => {
+        try {
+            const token = await getToken();
+            const res = await axios.post(
+                'https://trackflix-api.vercel.appwatchedEpisodes/add',
+                {
+                    clerkId: userId,
+                    episodeId: mediaId,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            console.log(res.data);
+            const responseData = Array.isArray(res.data) ? res.data : [res.data];
+
+            const items = responseData.map(entry => entry.item);
+            setMediaList(prevMedia => [...prevMedia, ...items]);
+        } catch (error) {
+            console.error('Error adding to watchlist:', error.response?.data || error.message);
+            setSnackbarVisible(mediaId);
+            setTimeout(() => setSnackbarVisible(null), 3000);
+        }
+    };
+
+    console.log(media)
     const { state } = useLocation();
     const season = state?.season;
     if (!season) return <div>Loading...</div>;
@@ -83,22 +144,37 @@ const SeasonPage = () => {
                                         <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 flex-1">
                                             {episode.overview || 'No overview available.'}
                                         </p>
-
+                                        {snackbarVisible === episode.id && (
+                                            <div
+                                                className="fixed items-end justify-center bg-red-500 text-white py-2 px-4 rounded shadow-md animate-fade-in-out"
+                                            >
+                                                Please SignIn!
+                                            </div>
+                                        )}
                                         <button
-                                            onClick={() => window.open()}
+                                            onClick={
+                                                media.some((item) => item.episodeId && String(item.episodeId) === String(episode.id))
+                                                    ? () => handleRemove(episode.id)
+                                                    : () => handleAddToWatchlist(episode.id)
+                                            }
                                             className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-full"
                                         >
-                                            Done
+                                            {media.some((item) => item.episodeId && String(item.episodeId) === String(episode.id)) ? '✕' : 'Done'}
+
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
+
                 ))
+
             ) : (
                 <p className="text-center text-gray-400">No episodes found.</p>
             )}
+
         </div>
     );
 };

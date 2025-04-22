@@ -81,48 +81,55 @@ export default function MovieDetails() {
 
     const SeasonCard = ({ season, index }) => {
         const navigate = useNavigate();
-      
+
         const handleOpenSeasonPage = () => {
-          navigate(`/tv/${season.show_id}/season/${season.season_number}`, { state: { season } });
+            navigate(`/tv/${season.show_id}/season/${season.season_number}`, { state: { season } });
         };
-      
+
         return (
-          <div
-            className="md:px-20 px-6 opacity-0 animate-fade-in cursor-pointer"
-            style={{ animationDelay: `${index * 300}ms`, animationFillMode: "forwards" }}
-            onClick={handleOpenSeasonPage}
-          >
-            <div className="flex flex-col md:flex-row bg-white dark:bg-gray-900 shadow-md rounded-lg overflow-hidden mb-6">
-              <img
-                src={season.poster_path
-                  ? `https://image.tmdb.org/t/p/w200${season.poster_path}`
-                  : '/no-image.png'}
-                alt={season.name}
-                className="w-32 md:w-40 object-cover"
-              />
-              <div className="p-4 flex flex-col justify-end flex-1">
-                
-                <div className="text-left">
-                  <h1 className="text-lg md:text-xl font-bold text-red-600 line-clamp-2">
-                    {season.name}
-                  </h1>
-                  <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2 line-clamp-3">
-                    {season.overview || "No overview available."}
-                  </p>
+            <div
+                className="md:px-20 px-6 opacity-0 animate-fade-in cursor-pointer"
+                style={{ animationDelay: `${index * 300}ms`, animationFillMode: "forwards" }}
+                onClick={handleOpenSeasonPage}
+            >
+                <div className="flex flex-col md:flex-row bg-white dark:bg-gray-900 shadow-md rounded-lg overflow-hidden mb-6">
+                    
+
+                    {season.poster_path ? (
+                        <img
+                            src={`https://image.tmdb.org/t/p/w200${season.poster_path}`}
+                            alt={season.name}
+                            className="w-32 md:w-40 object-cover"
+                        />
+                    ) : (
+                        <div className=" bg-gray-300 dark:bg-gray-700  items-center justify-center text-md text-gray-500 h-auto  rounded-md w-32 md:w-40 object-cover pt-14">
+                            N/A
+                        </div>
+                    )}
+
+                    <div className="p-4 flex flex-col justify-end flex-1">
+
+                        <div className="text-left">
+                            <h1 className="text-lg md:text-xl font-bold text-red-600 line-clamp-2">
+                                {season.name}
+                            </h1>
+                            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2 line-clamp-3">
+                                {season.overview || "No overview available."}
+                            </p>
+                        </div>
+
+                        <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mt-4">
+                            {season.vote_average ? season.vote_average.toFixed(1) : "N/A"}
+                            <StarIcon sx={{ fontSize: 16, marginLeft: '4px' }} className="text-yellow-400" />
+                            {" | "}
+                            {season.air_date?.slice(0, 4) || "Unknown Year"}{" | "}🎞 {season.episode_count} Episodes
+                        </div>
+
+                    </div>
                 </div>
-      
-                <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mt-4">
-                  {season.vote_average ? season.vote_average.toFixed(1) : "N/A"}
-                  <StarIcon sx={{ fontSize: 16, marginLeft: '4px' }} className="text-yellow-400" />
-                  {" | "}
-                  {season.air_date?.slice(0, 4) || "Unknown Year"}{" | "}🎞 {season.episode_count} Episodes
-                </div>
-      
-              </div>
             </div>
-          </div>
         );
-      };
+    };
 
 
 
