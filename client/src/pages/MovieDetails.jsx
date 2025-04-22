@@ -7,6 +7,8 @@ import AddToWatchlistButton from '../componants/watchlistbutton';
 import { CircleArrowRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import StarIcon from '@mui/icons-material/Star';
+import { FastAverageColor } from 'fast-average-color';
+
 export default function MovieDetails() {
     const navigate = useNavigate();
     const { id, type } = useParams();
@@ -16,6 +18,8 @@ export default function MovieDetails() {
     const [cast, setCast] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [seasons, setSeasons] = useState([]);
+
+    const [bgColor, setBgColor] = useState('#1f2937');
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -60,12 +64,21 @@ export default function MovieDetails() {
                     console.error("Failed to fetch seasons and episodes:", error);
                 }
             }
+            const fac = new FastAverageColor();
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = `https://corsproxy.io/?https://image.tmdb.org/t/p/original${details.backdrop_path}`;
+
+            img.onload = () => {
+                fac.getColorAsync(img)
+                    .then(color => setBgColor(color.hex), console.log("done"))
+                    .catch(err => console.error('Color extraction failed:', err));
+            };
 
             const elapsed = Date.now() - start;
-            const delay = Math.max(0, 1000 - elapsed);
+            const delay = Math.max(0, 2000 - elapsed);
             setTimeout(() => setIsLoading(false), delay);
         };
-
         fetchAll();
     }, [type, id]);
 
@@ -93,7 +106,7 @@ export default function MovieDetails() {
                 onClick={handleOpenSeasonPage}
             >
                 <div className="flex flex-col md:flex-row bg-white dark:bg-gray-900 shadow-md rounded-lg overflow-hidden mb-6">
-                    
+
 
                     {season.poster_path ? (
                         <img
@@ -135,7 +148,9 @@ export default function MovieDetails() {
 
     return (
         <div className="py-16 transition duration-300 animate-fade-in dark:bg-gray-900 min-h-screen flex flex-col ">
-            <div className="relative w-full h-auto md:h-[500px] text-white overflow-hidden">
+            <div className="relative w-full h-auto md:h-[500px] text-white overflow-hidden"
+                style={{ backgroundColor: bgColor }}
+            >
                 <div
                     className="hidden md:block absolute top-0 w-full h-full bg-cover bg-right bg-no-repeat"
                     style={{
