@@ -43,7 +43,7 @@ const SeasonPage = () => {
         try {
             const token = await getToken();
             const res = await axios.post(
-                'https://trackflix-api.vercel.appwatchedEpisodes/add',
+                'https://trackflix-api.vercel.app/watchedEpisodes/add',
                 {
                     clerkId: userId,
                     episodeId: mediaId,
