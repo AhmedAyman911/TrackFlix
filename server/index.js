@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/user.js';
 import watchlistRoutes from './routes/watchlist.js';
 import watchedEpsRoutes from './routes/episodes.js'
+import likedRoutes from './routes/liked.js'
 dotenv.config();
 import { ClerkExpressWithAuth, ClerkExpressRequireAuth  } from '@clerk/clerk-sdk-node';
 
@@ -41,6 +42,13 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use('/watchedEpisodes', watchedEpsRoutes);
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+app.use(express.json());
+app.use('/liked', likedRoutes);
 
 app.use(express.json());
 const mongoUri = process.env.mongoUri
